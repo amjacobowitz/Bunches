@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# Set ruby version
+ruby '2.3.0'
 # Use FFaker for fake naming
 gem 'ffaker'
 # Use fabrication for quickly creating objects

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :teachers do
     resources :klasses do
       resources :groups do
-        resoures :students
+        resources :students
       end
       resources :students do
         resources :goals
