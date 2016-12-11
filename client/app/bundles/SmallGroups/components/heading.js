@@ -23,11 +23,8 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     padding: '10px',
-    backgroundColor: LIGHT_PRIMARY,
-    color: WHITE,
     marginBottom: '30px',
     borderRadius: '10px',
-    border: `2px solid ${PRIMARY}`,
     lineHeight: '40px',
   }),
   heading: css({
@@ -35,12 +32,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    color: PRIMARY,
   }),
   subheading: css({
     display: 'flex',
     justifyContent: 'center',
     alignText: 'center',
     fontSize: '24px',
-    color: PRIMARY,
+    color: LIGHT_PRIMARY,
   }),
 }

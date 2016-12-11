@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { LIGHT_PRIMARY, WHITE } from '../../palette';
+import { LIGHT_PRIMARY, WHITE } from '../../../palette';
 
 export default function ActivityDirections({ directions }) {
   return (

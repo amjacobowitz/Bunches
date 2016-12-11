@@ -1,6 +1,6 @@
 teacher = Fabricate(:teacher)
 
-klass = Fabricate(:klass)
+klass = Fabricate(:klass, pin: '1234')
 teacher.klasses << klass
 
 4.times do

@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import { css } from 'glamor';
 
-import ActivityDirections from './activity-directions';
+import ActivityDirections from './directions';
 import Goals from './goals';
 
-import Heading from '../../components/heading';
-import Button from '../../components/button';
+import Heading from '../../../components/heading';
+import Button from '../../../components/button';
 
 export default class StudentOverview extends Component {
   constructor(props) {

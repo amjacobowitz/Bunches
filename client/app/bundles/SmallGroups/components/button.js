@@ -24,10 +24,11 @@ const styles = {
     borderStyle: 'none',
     cursor: 'pointer',
     borderRadius: '4px',
-    padding: '1em',
+    padding: '20px',
     color: WHITE,
   }),
   buttonText: css({
+    fontWeight: 100,
     margin: '0 auto',
     fontSize: '30px',
     padding: '30px',

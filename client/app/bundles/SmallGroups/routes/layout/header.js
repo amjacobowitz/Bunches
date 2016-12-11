@@ -17,17 +17,18 @@ export default function Header() {
 const styles = {
   container: css({
     width: '100%',
-    backgroundColor: PRIMARY,
     display: 'flex',
     alignItems: 'center',
     height: '70px',
+    borderBottom: `1px solid ${PRIMARY}`
   }),
   textContainer: css({
-    color: WHITE,
+    color: PRIMARY,
     fontWeight: 100,
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '20px',
+    fontWeight: 100,
   }),
   small: css({
     fontSize: '14px',

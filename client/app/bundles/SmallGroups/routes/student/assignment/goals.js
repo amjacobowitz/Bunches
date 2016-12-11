@@ -1,9 +1,9 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import StudentGoal from './student-goal';
+import Goal from './goal';
 
-import { LIGHT_PRIMARY, WHITE } from '../../palette';
+import { LIGHT_PRIMARY, WHITE } from '../../../palette';
 
 const goals = ['Kill it', 'Be awesome', 'Be me!'];
 
@@ -17,7 +17,7 @@ export default function Goals() {
             return (
               <div { ...styles.goalBox } key={ i }>
                 <span>{ i+1 })</span>
-                <StudentGoal { ...styles.goal } goal={ goal }/>
+                <Goal { ...styles.goal } goal={ goal }/>
               </div>
             )
           })

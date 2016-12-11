@@ -18,13 +18,13 @@ const styles = {
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    backgroundColor: PRIMARY,
     height: '30px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    borderTop: `1px solid ${PRIMARY}`
   }),
   text: css({
-    color: WHITE,
+    color: PRIMARY,
   }),
 }

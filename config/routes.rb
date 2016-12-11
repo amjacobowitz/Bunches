@@ -13,5 +13,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post 'auth/student' => 'auth#student'
+  post 'auth/teacher' => 'auth#teacher'
+
   get '*path', to: 'small_groups#index'
 end
