@@ -1,13 +1,14 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { PRIMARY, WHITE } from '../palette';
+import { LIGHT_PRIMARY, PRIMARY, WHITE } from '../palette';
 
-export default function Button({ onClick, text }) {
+export default function Button({ disabled = false, onClick, text }) {
   return (
     <div>
       <button
         { ...styles.button }
+        disabled={ disabled }
         onClick={ onClick }
       >
         <span { ...styles.buttonText }>
@@ -24,8 +25,13 @@ const styles = {
     borderStyle: 'none',
     cursor: 'pointer',
     borderRadius: '4px',
-    padding: '20px',
+    padding: '12px',
     color: WHITE,
+    ':disabled': {
+      backgroundColor: LIGHT_PRIMARY,
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
+    }
   }),
   buttonText: css({
     fontWeight: 100,

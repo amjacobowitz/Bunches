@@ -7,46 +7,47 @@ import TextInput from '../../components/text-input';
 
 import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../../palette';
 
-import authStudent from '../../actions/auth-student';
+import authTeacher from '../../actions/auth-teacher';
 
 class Landing extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', pin: '' };
+    this.state = { email: '', password: '' };
   }
 
   onChange = (value, name) => {
-    if (name == 'name') {
-      this.setState({ name: value });
+    if (name == 'email') {
+      this.setState({ email: value });
     } else {
-      this.setState({ pin: value });
+      this.setState({ password: value });
     }
   }
 
   onClick = () => {
-    const { name, pin } = this.state;
-    const student = { name: name.toLowerCase(), pin: pin };
-    this.props.authStudent(student);
+    const { email, password } = this.state;
+    const teacher = { email: email.toLowerCase(), password: password };
+    this.props.authTeacher(teacher);
   }
 
   render() {
     return (
       <div { ...styles.routeContainer }>
+        <div style={ styles.title }>Teacher Portal</div>
         <TextInput
-          name={'name'}
+          name={'email'}
           onChange={ this.onChange }
-          placeholder='first name'
+          placeholder='email'
           style={ styles.input }
         />
         <TextInput
-          name={'pin'}
+          name={'password'}
           onChange={ this.onChange }
-          placeholder='pin'
+          placeholder='password'
           style={ styles.input }
         />
         <Button
-          text="Get Started"
-          disabled={ !this.state.name || !this.state.pin }
+          text="login"
+          disabled={ !this.state.email || !this.state.password }
           onClick={ this.onClick }
         />
       </div>
@@ -55,11 +56,11 @@ class Landing extends Component {
 }
 
 const mapActionsToProps = {
-  authStudent,
+  authTeacher,
 };
 
-const mapStateToProps = ({ student }) => ({
-  student,
+const mapStateToProps = ({ teacher }) => ({
+  teacher,
 });
 
 const styles = {
@@ -67,13 +68,16 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '10%',
+    marginTop: '5%',
     flexDirection: 'column',
   }),
   input: {
     width: '250px',
     marginBottom: '20px',
   },
+  title: {
+    marginBottom: '90px',
+  }
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(Landing);

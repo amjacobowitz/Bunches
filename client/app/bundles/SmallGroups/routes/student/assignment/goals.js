@@ -3,17 +3,15 @@ import { css } from 'glamor';
 
 import Goal from './goal';
 
-import { LIGHT_PRIMARY, WHITE } from '../../../palette';
+import { LIGHT_GRAY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-const goals = ['Kill it', 'Be awesome', 'Be me!'];
-
-export default function Goals() {
+export default function Goals({ goalObjs }) {
   return(
     <div { ...styles.goalsContainer }>
       <div { ...styles.goalPrompt }>Goals</div>
       <div { ...styles.goalList }>
         {
-          goals.map((goal, i) => {
+          goalObjs.map((goal, i) => {
             return (
               <div { ...styles.goalBox } key={ i }>
                 <span>{ i+1 })</span>
@@ -33,7 +31,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     borderRadius: '4px',
-    border: `4px solid ${LIGHT_PRIMARY}`
+    border: `2px solid ${LIGHT_PRIMARY}`
   }),
   goalPrompt: css({
     display: 'flex',
@@ -51,6 +49,7 @@ const styles = {
     flexDirection: 'column',
     width: '70%',
     padding: '10px',
+    color: LIGHT_GRAY,
   }),
   goalBox: css({
     display: 'flex',
@@ -59,5 +58,4 @@ const styles = {
   }),
   goal: css({
   }),
-
 }

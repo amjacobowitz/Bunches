@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { LIGHT_PRIMARY, WHITE } from '../../../palette';
+import { LIGHT_GRAY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
 export default function ActivityDirections({ directions }) {
   return (
@@ -21,7 +21,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '4px',
-    border: `4px solid ${LIGHT_PRIMARY}`,
+    border: `2px solid ${LIGHT_PRIMARY}`,
     marginTop: '30px',
   }),
   prompt: css({
@@ -38,5 +38,6 @@ const styles = {
   }),
   directions: css({
     padding: '20px',
+    color: LIGHT_GRAY,
   }),
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../palette';
+import { LIGHT_GRAY, PRIMARY, LIGHT_PRIMARY, WHITE } from '../palette';
 
 export default function Heading({ children, heading, subheading }) {
   return (
@@ -32,7 +32,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    color: PRIMARY,
+    color: LIGHT_GRAY,
   }),
   subheading: css({
     display: 'flex',

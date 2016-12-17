@@ -1,1 +1,1 @@
-json.extract! student, :name, :id, :group_id
+json.extract! student, :name, :id

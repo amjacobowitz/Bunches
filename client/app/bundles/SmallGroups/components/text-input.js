@@ -9,7 +9,9 @@ export default class TextInput extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ text: e.target.value });
+    const value = e.target.value;
+    this.setState({ text: value });
+    this.props.onChange(value, this.props.name);
   }
 
   render() {

@@ -2,6 +2,12 @@ class AuthController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def teacher
+    teacher = Teacher.find_by(email: teacher_params[:email])
+    if teacher
+      render locals: { teacher: teacher }, status: 200
+    else
+      render json: { error: 'Couldn\'t find teacher.  Try again.'}
+    end
   end
 
   def student
@@ -21,6 +27,7 @@ class AuthController < ApplicationController
   private
 
   def teacher_params
+    params.require(:teacher).permit(:email, :password)
   end
 
   def student_params

@@ -1,1 +1,1 @@
-json.partial! "students/student", student: @student
+json.extract! student, :id, :name, :group, :klasses, :goals

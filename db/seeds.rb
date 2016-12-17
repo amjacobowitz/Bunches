@@ -7,6 +7,7 @@ teacher.klasses << klass
   group = Fabricate(:group)
   klass.groups << group
   goal = Fabricate(:goal)
+  Fabricate(:assignment, group: group, teacher: teacher)
   5.times do
     student = Fabricate(:student)
     group.students << student

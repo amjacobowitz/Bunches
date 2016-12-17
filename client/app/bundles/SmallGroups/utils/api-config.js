@@ -45,7 +45,6 @@ function ResponseException(response) {
 }
 
 function isSuccessful(response) {
-  debugger
   if(![200, 201, 204].includes(response.status)) {
     throw new ResponseException(response);
   }

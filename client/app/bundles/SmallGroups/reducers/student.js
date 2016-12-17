@@ -5,21 +5,27 @@ import {
 } from '../actions/index';
 
 const initialState = {
-  name: '',
-  pin: '',
-  error: '',
-}
+
+};
 
 const handlers = {
-  [FETCH_STUDENT]: (state, { student }) => ({
+  [FETCH_STUDENT]: (state, { s }) => ({
     ...state,
-    name: student.name,
-    pin: student.pin,
+    id: s.id,
+    name: s.name,
+    klass: {
+      name: s.klasses[0].name,
+      id: s.klasses[0].id
+    },
+    group: {
+      id: s.group.id
+    },
+    goals: s.goals,
   }),
   [FETCH_STUDENT_FAILURE]: (state, { error }) => ({
     ...state,
     error,
   }),
-};
+}
 
 export default createReducer(initialState, handlers);
