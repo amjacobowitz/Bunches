@@ -31,7 +31,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     borderRadius: '4px',
-    border: `2px solid ${LIGHT_PRIMARY}`
+    border: `2px solid ${LIGHT_PRIMARY}`,
+    minHeight: '80px',
   }),
   goalPrompt: css({
     display: 'flex',

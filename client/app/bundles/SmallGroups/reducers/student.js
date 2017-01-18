@@ -5,22 +5,28 @@ import {
 } from '../actions/index';
 
 const initialState = {
-
+  id: '',
+  firstName: '',
+  goals: [],
+  group: {},
+  klass: {},
+  lastName: '',
 };
 
 const handlers = {
-  [FETCH_STUDENT]: (state, { s }) => ({
+  [FETCH_STUDENT]: (state, { student }) => ({
     ...state,
-    id: s.id,
-    name: s.name,
+    id: student.id,
+    firstName: student.first_name,
+    lastName: student.last_name,
     klass: {
-      name: s.klasses[0].name,
-      id: s.klasses[0].id
+      name: student.klass.name,
+      id: student.klass.id
     },
     group: {
-      id: s.group.id
+      id: student.group.id
     },
-    goals: s.goals,
+    goals: student.goals,
   }),
   [FETCH_STUDENT_FAILURE]: (state, { error }) => ({
     ...state,

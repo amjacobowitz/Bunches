@@ -3,14 +3,17 @@ import { css } from 'glamor'
 
 import Footer from './footer';
 import Header from './header';
+import Sidebar from './sidebar';
 
 export default function Layout({ children }) {
   return (
-    <div>
+    <div >
       <Header/>
-        <div { ...styles.routeContainer }>
+      <div { ...styles.routeContainer }>
+        <div { ...styles.mainContainer }>
           { children }
         </div>
+      </div>
       <Footer/>
     </div>
   );
@@ -18,9 +21,14 @@ export default function Layout({ children }) {
 
 const styles = {
   routeContainer: css({
-    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'row',
+    height: '80vh',
+  }),
+  mainContainer: css({
     width: '80%',
     paddingTop: '20px',
     paddingBottom: '20px',
-  })
+    marginLeft: '10%',
+  }),
 }

@@ -1,4 +1,5 @@
 Fabricator(:student) do
   group
-  name FFaker::Name.first_name.downcase
+  first_name FFaker::Name.first_name.downcase
+  last_name FFaker::Name.last_name.downcase
 end

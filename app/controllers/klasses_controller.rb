@@ -37,32 +37,24 @@ class KlassesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /klasses/1
-  # PATCH/PUT /klasses/1.json
   def update
     respond_to do |format|
       if @klass.update(klass_params)
-        format.html { redirect_to @klass, notice: 'Klass was successfully updated.' }
         format.json { render :show, status: :ok, location: @klass }
       else
-        format.html { render :edit }
         format.json { render json: @klass.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /klasses/1
-  # DELETE /klasses/1.json
   def destroy
     @klass.destroy
     respond_to do |format|
-      format.html { redirect_to klasses_url, notice: 'Klass was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_klass
       @klass = Klass.find(params[:id])
     end

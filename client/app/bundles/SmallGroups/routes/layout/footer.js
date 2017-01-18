@@ -20,6 +20,7 @@ const styles = {
     bottom: 0,
     height: '30px',
     display: 'flex',
+    marginTop: '10px',
     alignItems: 'center',
     justifyContent: 'center',
     borderTop: `1px solid ${PRIMARY}`

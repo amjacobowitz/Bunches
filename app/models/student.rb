@@ -1,5 +1,7 @@
 class Student < ApplicationRecord
-  has_and_belongs_to_many :klasses
+  has_many :goals
+  has_many :assignments
+  has_many :submissions
   belongs_to :group
-  has_and_belongs_to_many :goals
+  belongs_to :klass
 end

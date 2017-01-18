@@ -1,5 +1,5 @@
 Fabricator(:assignment) do
-  group
+  student
   teacher
 
   completed false

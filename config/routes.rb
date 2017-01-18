@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   resources :teachers
   resources :klasses
   resources :groups
+  resources :assignments
   resources :students
   resources :goals
+  resources :groupings
 
   post 'auth/student' => 'auth#student'
   post 'auth/teacher' => 'auth#teacher'

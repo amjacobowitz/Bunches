@@ -1,13 +1,16 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { LIGHT_GRAY, LIGHT_PRIMARY, WHITE } from '../../../palette';
+import { LIGHT_GRAY, GRAY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-export default function ActivityDirections({ directions }) {
+export default function Directions({ title, directions }) {
   return (
     <div { ...styles.directionsContainer }>
       <div { ...styles.prompt }>
         What am I doing today?
+      </div>
+      <div { ...styles.title }>
+        { title }
       </div>
       <div { ...styles.directions }>
         { directions }
@@ -35,6 +38,12 @@ const styles = {
     lineHeight: '40px',
     textAlign: 'center',
     opacity: 0.5,
+  }),
+  title: css({
+    padding: '30px',
+    color: GRAY,
+    fontSize: '16px',
+    textAlign: 'center',
   }),
   directions: css({
     padding: '20px',

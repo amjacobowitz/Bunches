@@ -1,14 +1,16 @@
 import React from 'react';
 import { css } from 'glamor';
 
+const grapes = require('!!url!./grapes.png');
+
 import { PRIMARY, WHITE } from '../../palette';
 
 export default function Header() {
   return (
     <div { ...styles.container }>
-      <div { ...styles.textContainer }>
-        <span { ...styles.small }>small</span>
-        <span { ...styles.big }>groups</span>
+      <div { ...styles.iconContainer }>
+        <img { ...styles.grapes } src={ grapes } />
+        <span { ...styles.big }>bunches</span>
       </div>
     </div>
   );
@@ -22,19 +24,22 @@ const styles = {
     height: '70px',
     borderBottom: `1px solid ${PRIMARY}`
   }),
-  textContainer: css({
+  iconContainer: css({
     color: PRIMARY,
     fontWeight: 100,
     display: 'flex',
-    flexDirection: 'column',
     marginLeft: '20px',
     fontWeight: 100,
+    alignItems: 'center'
   }),
   small: css({
     fontSize: '14px',
   }),
   big: css({
     fontSize: '20px',
+  }),
+  grapes: css({
+    height: '30px',
   }),
 }
 

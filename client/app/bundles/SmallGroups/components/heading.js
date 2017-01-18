@@ -40,5 +40,6 @@ const styles = {
     alignText: 'center',
     fontSize: '24px',
     color: LIGHT_PRIMARY,
+    textAlign: 'center',
   }),
 }
