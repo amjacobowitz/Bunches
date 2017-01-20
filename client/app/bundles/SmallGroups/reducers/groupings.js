@@ -18,16 +18,15 @@ const removeGroup = (groupId, groupings) => {
 
 const formatToObjs = (records) => {
   if (records) {
-    const results = records.map((r) => {
-      return {
-        [r.id]: {
-          id: r.id,
-          title: r.title,
-          lessonId: r.lesson_id,
-          klassId: r.klass_id
-        }
+    const results = records.reduce((result, r) => {
+      result[r.id] = {
+        id: r.id,
+        title: r.title,
+        lessonId: r.lesson_id,
+        klassId: r.klass_id
       };
-    });
+      return result;
+    }, {});
     return { ...results };
   } else {
     return {};

@@ -86,22 +86,24 @@ class Grouper extends Component {
 
   render() {
     const { students, groups } = this.props;
+    const studentsExist = students.length > 0;
+
     return(
       <div { ...styles.container }>
         <div { ...styles.students }>
           <div { ...styles.title }>Students</div>
           <div { ...styles.subtitle }>{ students.length }</div>
           {
-            students.map((student, i) => {
-              return (
-                <Student
-                  key={ i }
-                  teacherId={ this.props.id }
-                  group={ student.group }
-                  student={ student }
-                />
-             )
-            })
+             studentsExist && (
+              students.map((student, i) => {
+                return (
+                  <Student
+                    key={ i }
+                    student={ student }
+                  />
+               )
+              })
+            )
           }
           <AddStudent toggleRodal={ this.toggleRodal }/>
         </div>

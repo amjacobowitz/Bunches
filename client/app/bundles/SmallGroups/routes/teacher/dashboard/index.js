@@ -12,6 +12,7 @@ import TextInput from '../../../components/text-input';
 import Option from './option';
 
 import changePath from '../../../actions/change-path';
+import fetchTeacher from '../../../actions/fetch-teacher';
 
 import { allKlasses } from '../../../selectors/klasses';
 
@@ -20,6 +21,7 @@ import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    props.fetchTeacher(props.params.id);
   }
 
   onClick = (word) => {
@@ -54,6 +56,7 @@ class Dashboard extends Component {
 
 const mapActionsToProps = {
   changePath,
+  fetchTeacher
 };
 
 const mapStateToProps = ({ }) => ({

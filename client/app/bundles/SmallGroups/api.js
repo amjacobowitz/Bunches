@@ -14,6 +14,8 @@ export function authorizeTeacher(teacher) {
   return fetchRequest(url, options);
 }
 
+
+
 export function authorizeStudent(student) {
   const url = route('/auth/student');
   const options = genHTTPOptions('POST',
@@ -195,7 +197,7 @@ export function updateStudentGoal(studentId, goalId) {
         goal_id: goalId
       }
     }
-  )
+  );
 
   return fetchRequest(url, options);
 }
@@ -208,7 +210,20 @@ export function getStudents(klassId) {
         id: klassId
       }
     }
-  )
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function getTeacher(teacherId) {
+  const url = route(`/teachers/${teacherId}`)
+  const options = genHTTPOptions('GET',
+    {
+      teacher: {
+        id: teacherId
+      }
+    }
+  );
 
   return fetchRequest(url, options);
 }

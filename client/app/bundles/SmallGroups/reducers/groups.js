@@ -20,15 +20,14 @@ const removeStudent = (studentId, students) => {
 
 const formatToObjs = (records) => {
   if (records) {
-    const results = records.map((r) => {
-      return {
-        [r.id]: {
-          id: r.id,
-          description: r.description,
-          students: []
-        }
+    const results = records.reduce((result, r) => {
+      result[r.id] = {
+        id: r.id,
+        description: r.description,
+        students: []
       };
-    });
+      return result;
+    }, {});
     return { ...results };
   } else {
     return {};

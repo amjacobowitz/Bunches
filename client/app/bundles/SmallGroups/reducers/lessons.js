@@ -20,9 +20,12 @@ const removeAssignment = (assignmentId, assignments) => {
 
 const formatToObjs = (records) => {
   if (records) {
-    const results = records.map((r) => {
-      return { [r.id]: { ...r } };
-    });
+    const results = records.reducer((result, r) => {
+       result[r.id] = {
+         ...r
+       };
+       return result;
+    }, {});
     return { ...results };
   } else {
     return {};

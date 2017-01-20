@@ -24,18 +24,17 @@ const removeAssociation = (associationId, associations) => {
 }
 
 const formatToObjs = (records) => {
-  const results = records.map((r) => {
-    return {
-      [r.id]: {
-        id: r.id,
-        firstName: r.first_name,
-        lastName: r.last_name,
-        groupId: r.group_id,
-        klassId: r.klass_id,
-        goals: r.goals
-      }
-    };
-  });
+  const results = records.reduce((result, r) => {
+    result[r.id] = {
+      id: r.id,
+      firstName: r.first_name,
+      lastName: r.last_name,
+      groupId: r.group_id,
+      klassId: r.klass_id,
+      goals: r.goals
+    }
+    return result;
+  }, {});
   return { ...results };
 }
 
@@ -50,7 +49,7 @@ const handlers = {
     };
   },
   [ADD_STUDENTS]: (state, { students }) => {
-    return formatToObjs(students);
+    return { ...formatToObjs(students) };
   },
   [REMOVE_STUDENT]: (state, { studentId }) => {
     delete state[studentId];

@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-create-reducer';
 import {
-  FETCH_TEACHER,
-  FETCH_TEACHER_FAILURE
+  AUTH_TEACHER,
+  AUTH_TEACHER_FAILURE
 } from '../actions/index';
 
 const initialState = {
@@ -10,12 +10,12 @@ const initialState = {
 };
 
 const handlers = {
-  [FETCH_TEACHER]: (state, { teacher }) => ({
+  [AUTH_TEACHER]: (state, { teacher }) => ({
     ...state,
     id: teacher.id,
     name: teacher.name,
   }),
-  [FETCH_TEACHER_FAILURE]: (state, { error }) => ({
+  [AUTH_TEACHER_FAILURE]: (state, { error }) => ({
     ...state,
     error,
   }),

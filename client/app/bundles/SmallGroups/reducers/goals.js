@@ -9,18 +9,17 @@ const initialState = {};
 
 const formatToObjs = (records) => {
   if (records) {
-    const results = records.map((r) => {
-      return {
-        [r.id]: {
-          id: r.id,
-          description: r.description,
-          studentId: r.student_id
-        }
+    const results = records.reduce((result, r) => {
+      result[r.id] = {
+        id: r.id,
+        description: r.description,
+        studentId: r.student_id
       };
-    });
+      return result;
+    }, {});
     return { ...results };
   } else {
-    return {}
+    return {};
   }
 }
 
