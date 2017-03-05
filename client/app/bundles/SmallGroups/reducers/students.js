@@ -9,9 +9,6 @@ import {
   REMOVE_GROUP_FROM_STUDENT,
   ADD_GOAL_TO_STUDENT,
   REMOVE_GOAL_FROM_STUDENT,
-  REMOVE_GOALS_FROM_STUDENT,
-  ADD_ASSIGNMENT_TO_STUDENT,
-  REMOVE_ASSIGNMENT_FROM_STUDENT,
 } from '../actions/index';
 
 const initialState = {};
@@ -21,7 +18,7 @@ const removeAssociation = (associationId, associations) => {
   const before = associations.slice(0, index);
   const after = associations.slice(index + 1, associations.length);
   return before.concat(after);
-}
+};
 
 const formatToObjs = (records) => {
   const results = records.reduce((result, r) => {
@@ -31,12 +28,12 @@ const formatToObjs = (records) => {
       lastName: r.last_name,
       groupId: r.group_id,
       klassId: r.klass_id,
-      goals: r.goals
+      goalId: r.goal_id,
     }
     return result;
   }, {});
   return { ...results };
-}
+};
 
 const handlers = {
   [ADD_STUDENT]: (state, { student }) => {
@@ -44,7 +41,7 @@ const handlers = {
         firstName: camelCase(student.first_name),
         lastName: camelCase(student.last_name),
         id: student.id,
-        goals: student.goals
+        goalId: student.goal_id
       }
     };
   },
@@ -65,27 +62,11 @@ const handlers = {
   },
   [ADD_GOAL_TO_STUDENT]: (state, { goalId, studentId }) => {
     const student = state[studentId];
-    const goals = student.goals;
-    return { ...state, [studentId]: { ...student, goals: goals.concat(goalId) } };
+    return { ...state, [studentId]: { ...student, goalId } };
   },
   [REMOVE_GOAL_FROM_STUDENT]: (state, { goalId, studentId }) => {
     const student = state[studentId];
-    const goals = removeAssociation(goalId, student.goals);
-    return { ...state, [studentId]: { ...student, goals: goals } };
-  },
-  [REMOVE_GOALS_FROM_STUDENT]: (state, { studentId }) => {
-    const student = state[studentId];
-    return { ...state, [studentId]: { ...student, goals: [] } };
-  },
-  [ADD_ASSIGNMENT_TO_STUDENT]: (state, { assignmentId, studentId }) => {
-    const student = state[studentId];
-    const assignments = students.assignments;
-    return { ...state, [studentId]: { ...student, assignments: assignments.concat(assignmentId) } };
-  },
-  [REMOVE_ASSIGNMENT_FROM_STUDENT]: (state, { assignmentId, studentId }) => {
-    const student = state[studentId];
-    const assignments = removeAssociation(assignmentId, student.assignments);
-    return { ...state, [studentId]: { ...student, assignments: assignments } };
+    return { ...state, [studentId]: { ...student, goalId } };
   },
 }
 

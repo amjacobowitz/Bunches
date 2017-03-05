@@ -4,21 +4,28 @@ klass = Fabricate(:klass, pin: '1234', teacher: teacher)
 teacher.klasses << klass
 assignment = Fabricate(:assignment, teacher: teacher)
 lesson = Fabricate(:lesson, teacher: teacher)
+day = Fabricate(:day, date: Date.new(2017, 2, 8))
 lesson.assignments << assignment
 teacher.lessons << lesson
+teacher.days << day
+day.lessons << lesson
 
 4.times do
-  goal = Fabricate(:goal)
   grouping = Fabricate(:grouping)
   klass.groupings << grouping
   lesson.grouping = grouping
+
   4.times do
+    goal = Fabricate(:goal)
+    teacher.goals << goal
+
     group = Fabricate(:group)
-    student = Fabricate(:student)
     grouping.groups << group
+
+    student = Fabricate(:student)
     group.students << student
     klass.students << student
-    student.goals << goal
-    student.assignments << assignment
+    goal.students << student
+    goal.groups << group
   end
 end

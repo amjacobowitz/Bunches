@@ -4,10 +4,15 @@ import {
   ADD_GROUP_TO_STUDENT,
   REMOVE_STUDENT_FROM_GROUP,
   REMOVE_GROUP_FROM_STUDENT,
-  REMOVE_STUDENT
+  REMOVE_STUDENT,
+  ADD_GOAL_TO_STUDENT,
+  ADD_GOAL_TO_STUDENT_FAILURE,
+  REMOVE_STUDENT_FROM_GOAL,
+  ADD_STUDENT_TO_GOAL,
+  ADD_STUDENT_TO_GOAL_FAILURE,
 } from './index';
 
-import { studentFromGroup, studentToGroup } from '../api';
+import { updateGoal, studentFromGroup, studentToGroup } from '../api';
 
 export default function addStudentToGroup(stu, group, teacherId) {
   return (dispatch, getState) => {
@@ -23,9 +28,7 @@ export default function addStudentToGroup(stu, group, teacherId) {
     const oldGroup = groups[oldGroupId];
 
     if (oldGroupId){
-
       const checkOldGroup = grouping.groups.includes(oldGroupId);
-
       const checkNewGroup = grouping.groups.includes(group.id);
 
       sameGrouping = checkOldGroup && checkNewGroup;
@@ -78,6 +81,12 @@ export default function addStudentToGroup(stu, group, teacherId) {
     }).then((student) => {
       dispatch({ type: ADD_STUDENT_TO_GROUP, studentId: student.id, groupId: group.id });
       dispatch({ type: ADD_GROUP_TO_STUDENT, studentId: student.id, groupId: group.id,});
+      if (group.goalId) {
+        updateGoal('', [student.id], group.goalId);
+        dispatch({ type: REMOVE_STUDENT_FROM_GOAL, goalId: group.goalId, studentId: student.id });
+        dispatch({ type: ADD_GOAL_TO_STUDENT, goalId: group.goalId, studentId: student.id });
+        dispatch({ type: ADD_STUDENT_TO_GOAL, goalId: group.goalId, studentId: student.id });
+      }
     }).catch((err) => {
       console.warn(err);
       dispatch({ type: ADD_STUDENT_TO_GROUP_FAILURE });

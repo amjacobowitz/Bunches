@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { css } from 'glamor';
 import { connect } from 'react-redux';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import Rodal from 'rodal';
 require('rodal/lib/rodal.css');
 
 import Grouper from './grouper'
 import Grouping from './grouping';
+import Trash from '../../../components/trash';
 import Button from '../../../components/button';
 
 import addGrouping from '../../../actions/add-grouping';
+import fetchTeacher from '../../../actions/fetch-teacher';
 
 import { selectAllStudents } from '../../../selectors/students';
 import { selectAllGroupings } from '../../../selectors/groupings';
@@ -17,13 +21,27 @@ import { LIGHT_PRIMARY, WHITE } from '../../../palette';
 
 const plus = require('!!url!./plus.png');
 
-class Klasses extends Component {
+function checkGroupingId(groupings) {
+  if (groupings.length > 1) {
+    const groupingId = groupings[0].id;
+    return groupingId;
+  }
+
+  return '';
+}
+
+class Groups extends Component {
   constructor(props) {
     super(props);
+
+    if (props.klasses.length === 0) {
+      props.fetchTeacher(props.params.id);
+    }
+
     this.state = {
       visible: false,
       title: '',
-      groupingId: '',
+      groupingId: checkGroupingId(props.groupings),
       selectedGroupingIndex: 0
     };
   }
@@ -41,12 +59,21 @@ class Klasses extends Component {
 
   addGrouping = (e) => {
     e.preventDefault();
-    const title = this.state.title;
+    const { params, addGrouping, groupings } = this.props;
+    const { title } = this.state;
+
     const grouping = { title };
-    const teacherId = this.props.params.id;
+    const teacherId = params.id;
     this.toggleRodal();
-    this.props.addGrouping(grouping, teacherId);
-    this.setState({ title: '', groups: [] });
+
+    addGrouping(grouping, teacherId)
+    .then((groupingId) => {
+      this.setState({
+        title: '',
+        groupingId: groupingId,
+        selectedGroupingIndex: groupings.length
+      });
+    });
   }
 
   toggleRodal = () => {
@@ -66,6 +93,7 @@ class Klasses extends Component {
     return(
       <div { ...styles.routeContainer }>
         <div { ...styles.groupingsContainer } >
+          <Trash teacherId={ params.id }/>
           <AddGrouping toggleRodal={ this.toggleRodal } />
           {
             groupings.map((gp, i) => {
@@ -75,7 +103,7 @@ class Klasses extends Component {
                   grouping={ gp }
                   onClick={ that.onClick }
                   selected={ selected }
-                  key={ i }
+                  key={ i+gp }
                   index={ i }
                 />
               )
@@ -179,17 +207,20 @@ const styles = {
 }
 
 const mapActionsToProps = {
-  addGrouping
+  addGrouping,
+  fetchTeacher,
 };
 
-const mapStateToProps = ({ groupings, students }) => {
+const mapStateToProps = ({ groupings, students, klasses }) => {
   const allStudents = selectAllStudents(students);
-  const allGroupings = selectAllGroupings(groupings)
+  const allGroupings = selectAllGroupings(groupings);
 
-   return {
+  return {
     groupings: allGroupings,
     students: allStudents,
+    klasses: Object.values(klasses),
   }
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(Klasses);
+Groups = DragDropContext(HTML5Backend)(Groups);
+export default connect(mapStateToProps, mapActionsToProps)(Groups);

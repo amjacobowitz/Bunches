@@ -20,7 +20,9 @@ const goal = require('!!url!./goal.png');
 
 import StudentsInGroupList from './students-in-group-list';
 import GoalDisplay from './goal-display';
+
 import addGoalToStudents from '../../../actions/add-goal-to-students';
+import changeGroupName from '../../../actions/change-group-name';
 
 const groupTarget = {
   drop(props, monitor) {
@@ -45,28 +47,51 @@ function collect(connect, monitor) {
 class Group extends Component {
   constructor(props) {
     super(props);
+    const name = props.group.name || '';
+    const goals = props.goals;
+
+    let description = '';
+    if (props.group) {
+      if (goals[props.group.goalId]) {
+        description = goals[props.group.goalId].description;
+      }
+    }
+
     this.state = {
-      name: '',
+      name: name,
       nameOpen: true,
-      description: '',
+      description: description,
       goalOpen: true,
       showGoal: false,
     }
   }
 
-  onSubmit = (e, source) => {
+  componentWillReceiveProps(nextProps) {
+    const goals = this.props.goals;
+    let description = '';
+    if (goals[nextProps.group.goalId]){
+      description = goals[nextProps.group.goalId].description;
+    }
+    this.setState({
+      name: nextProps.group.name,
+      description: description
+    })
+  }
+
+  onSubmit = (e, source, studentIds, goalId) => {
     e.preventDefault();
     const { name, nameOpen, goalOpen, description } = this.state;
-    const { addGoalToStudents, group } = this.props;
+    const { changeGroupName, addGoalToStudents, group, id } = this.props;
 
     if (source === 'name') {
       if (name.length > 0) {
         this.setState({ nameOpen: !nameOpen });
+        changeGroupName(group.id, name);
       }
     } else if(source === 'description') {
       if (description.length > 0) {
         this.setState({ goalOpen: !goalOpen });
-        addGoalToStudents(description, group);
+        addGoalToStudents(description, group, studentIds, id);
       }
     }
   }
@@ -92,7 +117,15 @@ class Group extends Component {
   }
 
   render() {
-    const { showGoal, group, connectDropTarget, isOver, item, removeGroup } = this.props;
+    const {
+      showGoal,
+      group,
+      connectDropTarget,
+      isOver,
+      item,
+      removeGroup,
+      groupingId
+    } = this.props;
 
     const name = this.state.nameOpen ?
                   <input
@@ -113,12 +146,13 @@ class Group extends Component {
                             onChange={ this.onChange }
                             onClick={ this.onClick }
                             onSubmit={ this.onSubmit }
+                            studentIds={ group.students }
                           />:
                           <StudentsInGroupList groupId={ group.id }/>
     return connectDropTarget(
       <div { ...styles.container }>
         <div { ...styles.closeContainer }>
-          <div { ...styles.close }  onClick={ () => removeGroup(group) } />
+          <div { ...styles.close }  onClick={ () => removeGroup(group, groupingId) } />
         </div>
         <form { ...styles.nameForm } onSubmit={ (e) => this.onSubmit(e, 'name') }>
           { name }
@@ -231,11 +265,15 @@ const styles = {
 
 const mapActionsToProps = {
   addGoalToStudents,
+  changeGroupName
 }
 
-const mapStateToProps = ({}) => ({
-
-});
+const mapStateToProps = ({ current_teacher, goals }) => {
+  return {
+    id: current_teacher.id,
+    goals
+  };
+}
 
 Group = DropTarget('student', groupTarget, collect)(Group);
 export default connect(mapStateToProps, mapActionsToProps)(Group);

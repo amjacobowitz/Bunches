@@ -23,7 +23,10 @@ const formatToObjs = (records) => {
         id: r.id,
         title: r.title,
         lessonId: r.lesson_id,
-        klassId: r.klass_id
+        klassId: r.klass_id,
+        groups: r.groups.map((g) => {
+          return g.id;
+        })
       };
       return result;
     }, {});
@@ -35,14 +38,15 @@ const formatToObjs = (records) => {
 
 const handlers = {
   [ADD_GROUPING]: (state, { grouping }) => {
-    return { ...state, [grouping.id]: { ...grouping } };
+    const newState = { ...state, [grouping.id]: { ...grouping } };
+    return newState;
   },
   [ADD_GROUPINGS]: (state, { groupings }) => {
     return formatToObjs(groupings);
   },
   [REMOVE_GROUPING]: (state, { groupingId }) => {
     delete state[groupingId];
-    return state;
+    return { ...state };
   },
   [ADD_GROUP_TO_GROUPING]: (state, { groupId, groupingId }) => {
     const grouping = state[groupingId];
@@ -51,7 +55,7 @@ const handlers = {
   },
   [REMOVE_GROUP_FROM_GROUPING]: (state, { groupId, groupingId }) => {
     const grouping = state[groupingId];
-    const students = removeStudent(groupId, grouping.groups);
+    const groups = removeGroup(groupId, grouping.groups);
     return { ...state, [groupingId]: { ...grouping, groups: groups } };
   },
 }

@@ -3,7 +3,7 @@ import { css } from 'glamor';
 
 import { LIGHT_PRIMARY, PRIMARY, WHITE } from '../palette';
 
-export default function Button({ style, disabled = false, onClick, text }) {
+export default function Button({ style, textStyle, disabled = false, onClick, text }) {
   return (
     <div>
       <button
@@ -11,7 +11,7 @@ export default function Button({ style, disabled = false, onClick, text }) {
         disabled={ disabled }
         onClick={ onClick }
       >
-        <span { ...styles.buttonText }>
+        <span { ...css(styles.buttonText, textStyle) }>
           { text }
         </span>
       </button>

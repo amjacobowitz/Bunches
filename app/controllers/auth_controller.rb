@@ -3,10 +3,11 @@ class AuthController < ApplicationController
 
   def teacher
     teacher = Teacher.find_by(email: teacher_params[:email])
+
     if teacher
-      render locals: { teacher: teacher }, status: 200
+      render locals: { teacher: teacher }, status: :ok
     else
-      render json: { error: 'Couldn\'t find teacher.  Try again.'}
+      render json: { error: 'Couldn\'t find teacher.  Try again.'}, status: :unprocessable_entity
     end
   end
 
@@ -18,9 +19,9 @@ class AuthController < ApplicationController
     end
 
     if student
-      render locals: { student: student }, status: 200
+      render locals: { student: student }, status: :ok
     else
-      render json: { error: 'Couldn\'t find student.  Try again.' }
+      render json: { error: 'Couldn\'t find student.  Try again.' }, status: :unprocessable_entity
     end
   end
 

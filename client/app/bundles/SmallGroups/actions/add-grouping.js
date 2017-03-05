@@ -10,6 +10,7 @@ export default function addGrouping(grping, teacherId) {
     return createGrouping(grping, teacherId)
     .then((grouping) => {
       dispatch({ type: ADD_GROUPING, grouping });
+      return grouping.id;
     }).catch((err) => {
       console.warn(err)
       dispatch({ type: ADD_GROUPING_FAILURE })

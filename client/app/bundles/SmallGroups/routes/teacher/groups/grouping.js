@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import { css } from 'glamor';
+import { DragSource } from 'react-dnd';
 
 import { LIGHT_GRAY, BLACK, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-export default class Grouping extends Component {
+const groupingSource = {
+  beginDrag(props) {
+    const { grouping } = props;
+    return { ...grouping };
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
+
+
+class Grouping extends Component {
   constructor(props) {
     super(props);
   }
@@ -14,11 +30,13 @@ export default class Grouping extends Component {
   }
 
   render() {
+    const { isDragging, connectDragSource } = this.props;
+
     const groupingStyle = this.props.selected ?
       styles.groupingSelected :
       styles.grouping;
 
-    return (
+    return connectDragSource(
       <div
         { ...groupingStyle }
         onClick={ this.onClick }
@@ -65,3 +83,5 @@ const styles = {
     }
   }),
 }
+
+export default DragSource('grouping', groupingSource, collect)(Grouping);

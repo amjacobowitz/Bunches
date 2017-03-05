@@ -1,5 +1,4 @@
 Fabricator(:assignment) do
-  student
   teacher
 
   completed false

@@ -5,6 +5,7 @@ import assignment from './assignment';
 import assignments from './assignments';
 import current_student from './current-student';
 import current_teacher from './current-teacher';
+import days from './days';
 import goals from './goals';
 import groups from './groups';
 import groupings from './groupings';
@@ -19,6 +20,7 @@ export default combineReducers({
   assignments,
   current_student,
   current_teacher,
+  days,
   goals,
   groups,
   groupings,

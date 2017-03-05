@@ -3,6 +3,7 @@ import {
   ADD_LESSON,
   ADD_LESSONS,
   REMOVE_LESSON,
+  ADD_DATE_TO_LESSON,
   ADD_ASSIGNMENT_TO_LESSON,
   REMOVE_ASSIGNMENT_FROM_LESSON,
   ADD_GROUPING_TO_LESSON,
@@ -20,9 +21,12 @@ const removeAssignment = (assignmentId, assignments) => {
 
 const formatToObjs = (records) => {
   if (records) {
-    const results = records.reducer((result, r) => {
+    const results = records.reduce((result, r) => {
        result[r.id] = {
-         ...r
+         id: r.id,
+         title: r.title,
+         assignments: r.assignments.map((a) => a.id),
+         dayId: r.day_id
        };
        return result;
     }, {});
@@ -34,23 +38,33 @@ const formatToObjs = (records) => {
 
 const handlers = {
   [ADD_LESSON]: (state, { lesson }) => {
-    return { ...state, [lesson.id]: { ...lesson } };
+    return { ...state,
+      [lesson.id]: {
+        id: lesson.id,
+        title: lesson.title,
+        assignments: lesson.assignments.map((a) => a.id),
+        dayId: lesson.day_id
+      }
+    };
   },
   [ADD_LESSONS]: (state, { lessons }) => {
     return formatToObjs(lessons);
   },
   [REMOVE_LESSON]: (state, { lessonId }) => {
     delete state[lessonId];
-    return state;
+    return { ...state };
   },
   [ADD_ASSIGNMENT_TO_LESSON]: (state, { assignmentId, lessonId }) => {
     const lesson = state[lessonId];
     return { ...state, [lessonId]: { ...lesson, assignments: lesson.assignments.concat(assignmentId) } };
   },
-  [REMOVE_ASSIGNMENT_FROM_LESSON]: (state, { assignmentId, studentId}) => {
-    const student = state[studentId];
-    const assignments = student.assignments;
-    return { ...state, [studentId]: { ...student, assignments: assignments.concat(assignmentId) } };
+  [ADD_DATE_TO_LESSON]: (state, { date, lessonId }) => {
+    const lesson = state[lessonId];
+    return { ...state, [lessonId]: { ...lesson, date } };
+  },
+  [REMOVE_ASSIGNMENT_FROM_LESSON]: (state, { assignmentId, lessonId}) => {
+    const lesson = state[lessonId];
+    return { ...state, [lessonId]: { ...lesson, assignments: removeAssignment(assignmentId, lesson.assignments) } };
   },
   [ADD_GROUPING_TO_LESSON]: (state, { groupingId, lessonId }) => {
     const lesson = state[lessonId];

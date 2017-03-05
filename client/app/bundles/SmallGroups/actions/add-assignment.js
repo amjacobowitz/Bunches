@@ -2,10 +2,8 @@ import { ADD_ASSIGNMENT, ADD_ASSIGNMENT_FAILURE } from './index';
 
 import { createAssignment } from '../api';
 
-export default function addAssignment(teacherId) {
+export default function addAssignment(assignment, teacherId) {
   return (dispatch, getState) => {
-    const { assignment } = getState();
-
     return createAssignment(assignment, teacherId)
     .then((assign) => {
       dispatch({ type: ADD_ASSIGNMENT, assignment: assign });

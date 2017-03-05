@@ -5,6 +5,7 @@ class CreateStudents < ActiveRecord::Migration[5.0]
       t.string :last_name
       t.references :group, index: true, foreign_key: true, type: :uuid
       t.references :klass, index: true, foreign_key: true, type: :uuid
+      t.references :goal, index: true, foreign_key: true, type: :uuid
 
       t.timestamps null: false
     end

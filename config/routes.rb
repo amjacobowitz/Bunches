@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :students
   resources :goals
   resources :groupings
+  resources :lessons
+  resources :days
 
   post 'auth/student' => 'auth#student'
   post 'auth/teacher' => 'auth#teacher'

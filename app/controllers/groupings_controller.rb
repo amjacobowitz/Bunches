@@ -41,11 +41,12 @@ class GroupingsController < ApplicationController
   end
 
   def destroy
-    students = Student.where(grouping_id: grouping.id)
+    groups = grouping.groups
 
     grouping.groups.each do |group|
-      group.students.delete(students)
+      group.students.delete(group.students)
     end
+
     grouping.groups.delete(groups)
 
     grouping.destroy

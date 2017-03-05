@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'glamor';
 
-const klasses = require('!!url!./klasses.png');
-const assignments = require('!!url!./assignments.png');
+const groups = require('!!url!./groups.png');
+const lessons = require('!!url!./lessons.png');
 const analysis = require('!!url!./analysis.png');
 
 import Button from '../../../components/button';
@@ -21,31 +21,36 @@ import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    props.fetchTeacher(props.params.id);
+    if (props.klasses.length === 0) {
+      props.fetchTeacher(props.params.id);
+    }
   }
 
   onClick = (word) => {
-    changePath(`/teacher/${this.props.params.id}/${word}`)
+    this.props.changePath(`/teacher/${this.props.params.id}/${word}`)
   }
 
   render() {
-    const { changePath, params } = this.props;
+    const { params } = this.props;
     return (
       <div { ...styles.routeContainer }>
         <div { ...styles.row }>
           <Option
-            img={ klasses }
-            word='classes'
+            img={ groups }
+            text='vines'
+            link='groups'
             onClick={ this.onClick }
           />
           <Option
-            img={ assignments }
-            word='assignments'
+            img={ lessons }
+            text='lessons'
+            link='lessons'
             onClick={ this.onClick }
           />
           <Option
             img={ analysis }
-            word='analysis'
+            text='analysis'
+            link='analysis'
             onClick={ this.onClick }
           />
         </div>
@@ -59,7 +64,8 @@ const mapActionsToProps = {
   fetchTeacher
 };
 
-const mapStateToProps = ({ }) => ({
+const mapStateToProps = ({ klasses }) => ({
+  klasses: Object.keys(klasses)
 });
 
 const styles = {

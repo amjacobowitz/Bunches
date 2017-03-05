@@ -31,17 +31,16 @@ class GroupsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @group.update(group_params)
-        format.json { render :show, status: :ok, location: @group }
+      if group.update(group_params)
+        format.json { render :show, status: :ok }
       else
-        format.json { render json: @group.errors, status: :unprocessable_entity }
+        format.json { render json: group.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
-    students = Student.where(group_id: group.id)
-    group.students.delete(students)
+    group.students.delete(group.students)
 
     group.destroy
     respond_to do |format|
@@ -54,7 +53,11 @@ class GroupsController < ApplicationController
       @group ||= Group.find(params[:id])
     end
 
+    def assignment
+      @assignment ||= Assignment.find(group_params[:assignment_id])
+    end
+
     def group_params
-      params.require(:group).permit(:name, :grouping_id)
+      params.require(:group).permit(:name, :assignment_id, :grouping_id)
     end
 end

@@ -14,8 +14,6 @@ export function authorizeTeacher(teacher) {
   return fetchRequest(url, options);
 }
 
-
-
 export function authorizeStudent(student) {
   const url = route('/auth/student');
   const options = genHTTPOptions('POST',
@@ -51,8 +49,8 @@ export function createAssignment(assignment, teacherId) {
       assignment: {
         directions: assignment.directions,
         title: assignment.title,
-        teacher_id: teacherId,
-      }
+      },
+      teacher_id: teacherId
     }
   )
 
@@ -60,18 +58,93 @@ export function createAssignment(assignment, teacherId) {
 }
 
 export function putAssignment(groupId, assignmentId) {
-  const url = route(`/groups/${groupId}/assignments/${assignmentId}`);
+  const url = route(`/assignments/${assignmentId}`);
   const options = genHTTPOptions('PUT',
     {
       assignment: {
+        id: assignmentId,
         completed: true,
-        submitted: true
+        submitted: true,
       }
     }
   );
 
   return fetchRequest(url, options);
 }
+
+export function groupToAssignment(assignmentId, groupId) {
+  const url = route(`/groups/${groupId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      group: {
+        id: groupId,
+        assignment_id: assignmentId
+      },
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function groupFromAssignment(assignmentId, groupId) {
+  const url = route(`/groups/${groupId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      group: {
+        assignment_id: ''
+      },
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+
+export function updateLesson(assignmentId, lessonId) {
+  const url = route(`/lessons/${lessonId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      lesson: {
+        id: lessonId,
+        assignment_id: assignmentId
+      }
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function lessonToDay(lessonId, date, teacherId) {
+  const url = route(`/lessons/${lessonId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      lesson: {
+        id: lessonId,
+        date: {
+          year: date.year,
+          month: date.month,
+          day: date.day,
+        }
+      },
+      teacher_id: teacherId
+    }
+  );
+
+  return fetchRequest(url, options);
+};
+
+export function lessonFromDay(lessonId, dayId) {
+  const url = route(`/days/${dayId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      day: {
+        lesson_id: lessonId,
+      }
+    }
+  );
+
+  return fetchRequest(url, options);
+};
 
 export function createStudent(student, teacherId) {
   const url = route('/students');
@@ -88,12 +161,44 @@ export function createStudent(student, teacherId) {
   return fetchRequest(url, options);
 }
 
-
 export function destroyStudent(student) {
   const url = route(`/students/${student.id}`);
   const options = genHTTPOptions('DELETE',
     {
       id: student.id
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function destroyGrouping(grouping) {
+  const url = route(`/groupings/${grouping.id}`);
+  const options = genHTTPOptions('DELETE',
+    {
+      id: grouping.id
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function destroyAssignment(assignment) {
+  const url = route(`/assignments/${assignment.id}`);
+  const options = genHTTPOptions('DELETE',
+    {
+      id: assignment.id
+    }
+  );
+
+  return fetchRequest(url, options);
+}
+
+export function destroyLesson(lesson) {
+  const url = route(`/lessons/${lesson.id}`);
+  const options = genHTTPOptions('DELETE',
+    {
+      id: lesson.id
     }
   );
 
@@ -174,33 +279,46 @@ export function destroyGroup(group) {
   return fetchRequest(url, options);
 }
 
-export function createGoal(description, groupId) {
+export function createGoal(description, groupId, studentIds, teacherId) {
   const url = route(`/goals`);
   const options = genHTTPOptions('POST',
     {
-      goal: {
-        description: description,
-        group_id: groupId
-      }
+      description: description,
+      group_id: groupId,
+      teacher_id: teacherId,
+      student_ids: studentIds,
     }
   );
 
   return fetchRequest(url, options);
 }
 
-export function updateStudentGoal(studentId, goalId) {
-  const url = route(`/students/${studentId}`);
+export function updateGoal(description, studentIds, goalId) {
+  const url = route(`/goals/${goalId}`);
   const options = genHTTPOptions('PUT',
     {
-      student: {
-        id: studentId,
-        goal_id: goalId
-      }
+      id: goalId,
+      description: description,
+      student_ids: studentIds,
     }
   );
 
   return fetchRequest(url, options);
 }
+
+export function updateGroupName(groupId, name) {
+  const url = route(`/groups/${groupId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      group: {
+        id: groupId,
+        name: name
+      }
+    }
+  )
+
+  return fetchRequest(url, options);
+};
 
 export function getStudents(klassId) {
   const url = route(`/klasses/${klassId}`);
@@ -253,3 +371,4 @@ export function getGoals(klassId) {
 
   return fetchRequest(url, options);
 }
+

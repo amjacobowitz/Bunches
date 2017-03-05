@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170102165215) do
+ActiveRecord::Schema.define(version: 20170215015253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,14 +21,27 @@ ActiveRecord::Schema.define(version: 20170102165215) do
     t.boolean  "submitted",  default: false, null: false
     t.string   "title",                      null: false
     t.string   "directions",                 null: false
-    t.uuid     "student_id"
     t.uuid     "teacher_id"
     t.uuid     "lesson_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.index ["lesson_id"], name: "index_assignments_on_lesson_id", using: :btree
-    t.index ["student_id"], name: "index_assignments_on_student_id", using: :btree
     t.index ["teacher_id"], name: "index_assignments_on_teacher_id", using: :btree
+  end
+
+  create_table "days", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.date     "date"
+    t.uuid     "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_days_on_teacher_id", using: :btree
+  end
+
+  create_table "days_lessons", id: false, force: :cascade do |t|
+    t.uuid "day_id"
+    t.uuid "lesson_id"
+    t.index ["day_id"], name: "index_days_lessons_on_day_id", using: :btree
+    t.index ["lesson_id"], name: "index_days_lessons_on_lesson_id", using: :btree
   end
 
   create_table "goal_tags", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -41,10 +54,10 @@ ActiveRecord::Schema.define(version: 20170102165215) do
 
   create_table "goals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "description", null: false
-    t.uuid     "student_id"
+    t.uuid     "teacher_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["student_id"], name: "index_goals_on_student_id", using: :btree
+    t.index ["teacher_id"], name: "index_goals_on_teacher_id", using: :btree
   end
 
   create_table "groupings", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -60,8 +73,12 @@ ActiveRecord::Schema.define(version: 20170102165215) do
   create_table "groups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
     t.uuid     "grouping_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.uuid     "assignment_id"
+    t.uuid     "goal_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["assignment_id"], name: "index_groups_on_assignment_id", using: :btree
+    t.index ["goal_id"], name: "index_groups_on_goal_id", using: :btree
     t.index ["grouping_id"], name: "index_groups_on_grouping_id", using: :btree
   end
 
@@ -77,10 +94,11 @@ ActiveRecord::Schema.define(version: 20170102165215) do
 
   create_table "lessons", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "title"
-    t.date     "date"
     t.uuid     "teacher_id"
+    t.uuid     "day_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["day_id"], name: "index_lessons_on_day_id", using: :btree
     t.index ["teacher_id"], name: "index_lessons_on_teacher_id", using: :btree
   end
 
@@ -89,8 +107,10 @@ ActiveRecord::Schema.define(version: 20170102165215) do
     t.string   "last_name"
     t.uuid     "group_id"
     t.uuid     "klass_id"
+    t.uuid     "goal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["goal_id"], name: "index_students_on_goal_id", using: :btree
     t.index ["group_id"], name: "index_students_on_group_id", using: :btree
     t.index ["klass_id"], name: "index_students_on_klass_id", using: :btree
   end
@@ -120,13 +140,18 @@ ActiveRecord::Schema.define(version: 20170102165215) do
 
   add_foreign_key "assignments", "lessons"
   add_foreign_key "assignments", "teachers"
+  add_foreign_key "days", "teachers"
   add_foreign_key "goal_tags", "goals"
-  add_foreign_key "goals", "students"
+  add_foreign_key "goals", "teachers"
   add_foreign_key "groupings", "klasses"
   add_foreign_key "groupings", "lessons"
+  add_foreign_key "groups", "assignments"
+  add_foreign_key "groups", "goals"
   add_foreign_key "groups", "groupings"
   add_foreign_key "klasses", "teachers"
+  add_foreign_key "lessons", "days"
   add_foreign_key "lessons", "teachers"
+  add_foreign_key "students", "goals"
   add_foreign_key "students", "groups"
   add_foreign_key "students", "klasses"
   add_foreign_key "submissions", "assignments"

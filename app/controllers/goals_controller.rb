@@ -16,34 +16,42 @@ class GoalsController < ApplicationController
   end
 
   def create
-    group = Group.find(goal_params[:group_id])
     @goal = Goal.new(description: goal_params[:description])
-    students = group.students
-
-    if students
-      students.each do |student|
-        student.goals = []
-        student.save
-        student.goals << @goal
-      end
-    end
-
     respond_to do |format|
       if @goal.save
+         teacher = Teacher.find(goal_params[:teacher_id])
+         teacher.goals << @goal
+
+         goal_params[:student_ids].each do |student_id|
+           student = Student.find(student_id)
+           @goal.students << student
+         end
+
+        group = Group.find(goal_params[:group_id])
+        @goal.groups << group
+
         format.json { render :show, status: :created }
       else
-        format.json { render json: @goal.errors, status: :unprocessable_entity }
+        format.json { render json: goal.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
-    @goal = goal.update(goal_params)
+    params[:student_ids].each do |student_id|
+      student = Student.find(student_id)
+      goal.students << student
+    end
+
+    if goal_params[:description]
+      goal.update(description: goal_params[:description])
+    end
+
     respond_to do |format|
-      if @goal.save
+      if goal.save
         format.json { render :show, status: :ok }
       else
-        format.json { render json: @goal.errors, status: :unprocessable_entity }
+        format.json { render json: goal.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -57,10 +65,10 @@ class GoalsController < ApplicationController
 
   private
     def goal
-      @goal = Goal.find(params[:id])
+      @goal ||= Goal.find(params[:id])
     end
 
     def goal_params
-      params.require(:goal).permit(:description, :group_id, :goal_type_id)
+      params.permit(:description, :group_id, :goal_type_id, :teacher_id, student_ids: params[:student_ids])
     end
 end

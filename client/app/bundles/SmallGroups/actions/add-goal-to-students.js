@@ -1,28 +1,46 @@
 import {
+  ADD_GOAL,
+  UPDATE_GOAL_DESCRIPTION,
   ADD_GOAL_TO_STUDENT,
-  REMOVE_GOALS_FROM_STUDENT,
+  ADD_GOAL_TO_GROUP,
+  ADD_STUDENT_TO_GOAL,
+  ADD_GROUP_TO_GOAL,
   ADD_GOAL_TO_STUDENT_FAILURE
 } from './index';
 
-import { createGoal } from '../api';
+import { createGoal, updateGoal } from '../api';
 
-export default function addGoalToStudents(description, group) {
+export default function addGoalToStudents(description, group, studentIds, teacherId) {
   return (dispatch, getState) => {
-    const { students } = getState();
+    const { students, goals } = getState();
 
-    return createGoal(description, group.id)
-    .then((g) => {
-      const withGoals = Object.values(students).filter((s) => {
-        return s.goals.length >= 1
-      });
+    if (group.goalId) {
+      var promise = updateGoal(description, studentIds, group.goalId);
+    } else {
+      var promise = createGoal(description, group.id, studentIds, teacherId);
+    }
 
-      withGoals.forEach((s) => {
-        dispatch({ type: REMOVE_GOALS_FROM_STUDENT, goalId: g.id, studentId: s.id });
-      });
+    promise.then((g) => {
+      if (!group.goalId) {
+        dispatch({ type: ADD_GOAL, goal: g });
+        dispatch({ type: ADD_GROUP_TO_GOAL, goalId: g.id, groupId: group.id });
+      } else {
+        const goal = goals[g.id];
+
+        dispatch({ type: UPDATE_GOAL_DESCRIPTION, goal: g });
+        g.students.forEach((s) => {
+          if (!goal.students.includes(s.id)) {
+            dispatch({ type: ADD_STUDENT_TO_GOAL, goalId: g.id, studentId: s.id });
+          }
+        });
+      }
 
       group.students.forEach((studentId) => {
         dispatch({ type: ADD_GOAL_TO_STUDENT, goalId: g.id, studentId })
       });
+
+      dispatch({ type: ADD_GOAL_TO_GROUP, goalId: g.id, groupId: group.id });
+
     }).catch((err) => {
       console.warn(err);
       dispatch({ type: ADD_GOAL_TO_STUDENT_FAILURE });

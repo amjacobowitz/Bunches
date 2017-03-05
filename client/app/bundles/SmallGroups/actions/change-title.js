@@ -1,7 +1,7 @@
 import { CHANGE_TITLE } from './index';
 
-export default function changeTitle(title) {
+export default function changeTitle(assignmentId, title) {
   return (dispatch) => {
-    dispatch({type: CHANGE_TITLE, title })
+    dispatch({type: CHANGE_TITLE, assignmentId, title })
   }
 }

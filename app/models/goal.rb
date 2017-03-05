@@ -1,4 +1,5 @@
 class Goal < ApplicationRecord
-  has_one :goal_tag
-  belongs_to :student
+  has_many :students
+  has_many :groups
+  belongs_to :teacher
 end

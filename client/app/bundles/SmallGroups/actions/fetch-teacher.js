@@ -1,7 +1,9 @@
 import {
+  AUTH_TEACHER,
   FETCH_TEACHER,
   FETCH_TEACHER_FAILURE,
   ADD_ASSIGNMENTS,
+  ADD_DAYS,
   ADD_GOALS,
   ADD_GROUPS,
   ADD_GROUPINGS,
@@ -16,6 +18,7 @@ export default function fetchTeacher(teacherId) {
   return (dispatch) => {
     return getTeacher(teacherId)
     .then((t) => {
+      dispatch({ type: AUTH_TEACHER, teacher: t });
       dispatch({ type: ADD_KLASSES, klasses: t.klasses });
 
       t.klasses.forEach((klass) => {
@@ -23,16 +26,14 @@ export default function fetchTeacher(teacherId) {
         dispatch({ type: ADD_GROUPINGS, groupings: klass.groupings });
 
         klass.groupings.forEach((grouping) => {
-          dispatch({ type: ADD_GROUPS, groups: grouping.group });
-        })
-
-        klass.students.forEach((student) => {
-          dispatch({ type: ADD_GOALS, goals: student.goals });
+          dispatch({ type: ADD_GROUPS, groups: grouping.groups });
         })
       });
 
       dispatch({ type: ADD_ASSIGNMENTS, assignments: t.assignments });
       dispatch({ type: ADD_LESSONS, lessons: t.lessons });
+      dispatch({ type: ADD_GOALS, goals: t.goals });
+      dispatch({ type: ADD_DAYS, days: t.days });
     }).catch((e) => {
       console.warn(e);
       dispatch({ type: FETCH_TEACHER_FAILURE });

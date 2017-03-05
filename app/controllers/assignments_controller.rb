@@ -17,6 +17,7 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new(assignment_params)
+    teacher.assignments << @assignment
 
     respond_to do |format|
       if @assignment.save
@@ -28,10 +29,11 @@ class AssignmentsController < ApplicationController
   end
 
   def update
-    assignments = Assignment.where(student_id: params[:student_id])
+    assignment.update(assignment_params)
+
     respond_to do |format|
-      if assignments[0].update(assignment_params)
-        format.json { render json: {}, status: :ok }
+      if @assignment.save
+        format.json { render :show, status: :ok }
       else
         format.json { render json: assignment.errors, status: :unprocessable_entity }
       end
@@ -39,6 +41,18 @@ class AssignmentsController < ApplicationController
   end
 
   def destroy
+    groups = Group.where(assignment_id: assignment.id)
+
+    if groups
+      groups.update(assignment_id: '')
+    end
+
+    assignment.teacher.assignments.delete(assignment)
+
+    if (assignment.lesson)
+      assignment.lesson.assignments.delete(assignment)
+    end
+
     assignment.destroy
     respond_to do |format|
       format.json { head :no_content }
@@ -46,11 +60,15 @@ class AssignmentsController < ApplicationController
   end
 
   private
+    def teacher
+      @teacher ||= Teacher.find(params[:teacher_id])
+    end
+
     def assignment
-      @assignment || @assignment = Assignment.find(params[:id])
+      @assignment ||= Assignment.find(params[:id])
     end
 
     def assignment_params
-      params.require(:assignment).permit(:directions, :title, :completed, :submitted,  :student_id, :teacher_id)
+      params.require(:assignment).permit(:directions, :title, :completed, :submitted)
     end
 end

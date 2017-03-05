@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { css } from 'glamor';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 import Rodal from 'rodal';
 require('rodal/lib/rodal.css');
 import ToggleButton from 'react-toggle-button';
@@ -18,7 +16,6 @@ import addGroup from '../../../actions/add-group';
 import removeGroup from '../../../actions/remove-group';
 import addStudentToGroup from '../../../actions/add-student-to-group';
 import removeStudentFromGroup from '../../../actions/remove-student-from-group';
-import addGoalToStudent from '../../../actions/add-goal-to-student';
 
 import { selectStudentsWithoutGroupsInGrouping } from '../../../selectors/students';
 import { selectAllGroupsInGrouping } from '../../../selectors/groups';
@@ -85,7 +82,7 @@ class Grouper extends Component {
   }
 
   render() {
-    const { students, groups } = this.props;
+    const { students, groups, groupingId } = this.props;
     const studentsExist = students.length > 0;
 
     return(
@@ -93,18 +90,20 @@ class Grouper extends Component {
         <div { ...styles.students }>
           <div { ...styles.title }>Students</div>
           <div { ...styles.subtitle }>{ students.length }</div>
-          {
-             studentsExist && (
-              students.map((student, i) => {
-                return (
-                  <Student
-                    key={ i }
-                    student={ student }
-                  />
-               )
-              })
-            )
-          }
+          <div { ...styles.studentList }>
+            {
+               studentsExist && (
+                students.map((student, i) => {
+                  return (
+                    <Student
+                      key={ i }
+                      student={ student }
+                    />
+                 )
+                })
+              )
+            }
+          </div>
           <AddStudent toggleRodal={ this.toggleRodal }/>
         </div>
         <div { ...styles.groupsContainer }>
@@ -139,7 +138,7 @@ class Grouper extends Component {
                     showGoal={ this.state.showGoals }
                     removeGroup={ this.removeGroup }
                     addStudentToGroup={ this.addStudentToGroup }
-                    addGoalToStudent={ this.props.addGoalToStudent }
+                    groupingId={ groupingId }
                   />
                 )
               })
@@ -282,15 +281,23 @@ const styles = {
   goalToggle: css({
     position: 'absolute',
     right: 300
-  })
+  }),
+  studentList: css({
+    display: 'flex',
+    flexWrap: 'wrap'
+  }),
 }
 
-const mapStateToProps = ({ groupings, students, groups }, ownProps) => ({
-  groupingId: ownProps.groupingId,
-  groups: selectAllGroupsInGrouping(groups, ownProps.groupingId),
-  students: selectStudentsWithoutGroupsInGrouping(students, groups, ownProps.groupingId),
-  groupings,
-});
+const mapStateToProps = ({ groupings, students, groups }, ownProps) => {
+  const groupsInGrouping = selectAllGroupsInGrouping(groups, ownProps.groupingId);
+
+  return {
+    groupingId: ownProps.groupingId,
+    groups: groupsInGrouping,
+    students: selectStudentsWithoutGroupsInGrouping(students, groups, ownProps.groupingId),
+    groupings,
+  }
+};
 
 const mapActionsToProps = {
   addStudent,
@@ -299,8 +306,6 @@ const mapActionsToProps = {
   removeGroup,
   addStudentToGroup,
   removeStudentFromGroup,
-  addGoalToStudent,
 };
 
-Grouper = DragDropContext(HTML5Backend)(Grouper);
 export default connect(mapStateToProps, mapActionsToProps)(Grouper);

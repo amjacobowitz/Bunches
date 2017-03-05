@@ -1,1 +1,1 @@
-json.extract! goal, :id, :description
+json.extract! goal, :id, :description, :students, :groups

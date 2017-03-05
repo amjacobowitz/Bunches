@@ -6,7 +6,7 @@ import {
 } from '../../../palette';
 
 
-export default function GoalDisplay({ goalOpen, description, onChange, onClick, onSubmit }) {
+export default function GoalDisplay({ studentIds, goalOpen, description, onChange, onClick, onSubmit }) {
   const goalDisplay = goalOpen ?
                 <input
                   { ...styles.goalInput }
@@ -22,7 +22,7 @@ export default function GoalDisplay({ goalOpen, description, onChange, onClick, 
   return (
     <div { ...styles.goalWrapper }>
       <div { ...styles.goalContainer }>
-        <form onSubmit={ (e) => onSubmit(e, 'description') }>
+        <form onSubmit={ (e) => onSubmit(e, 'description', studentIds) }>
           { goalDisplay }
         </form>
       </div>

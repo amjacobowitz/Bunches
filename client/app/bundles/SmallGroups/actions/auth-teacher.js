@@ -1,5 +1,4 @@
 import {
-  AUTH_TEACHER,
   AUTH_TEACHER_FAILURE,
 } from './index';
 
@@ -11,10 +10,10 @@ export default function authTeacher(teacher) {
   return (dispatch) => {
     return authorizeTeacher(teacher)
     .then((t) => {
-      return dispatch(fetchTeacher(t.id));
+      dispatch(fetchTeacher(t.id));
+      return t;
     }).then((t) => {
-       dispatch({ type: AUTH_TEACHER, teacher: t });
-       changePath(`teacher/${t.id}/dashboard`);
+       dispatch(changePath(`/teacher/${t.id}/dashboard`));
     }).catch((err) => {
       console.warn(err);
       dispatch({ type: AUTH_TEACHER_FAILURE });

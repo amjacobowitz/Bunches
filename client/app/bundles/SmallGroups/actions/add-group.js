@@ -14,7 +14,7 @@ export default function addGroup(groupingId) {
         id: g.id,
         title: '',
         students: [],
-        groupingId: groupingId
+        groupingId: groupingId,
       };
       dispatch({ type: ADD_GROUP, group });
       dispatch({ type: ADD_GROUP_TO_GROUPING, groupId: g.id, groupingId });

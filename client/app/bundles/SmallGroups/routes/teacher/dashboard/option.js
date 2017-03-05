@@ -4,11 +4,11 @@ import { css } from 'glamor';
 
 import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-export default function Option({ img, onClick, word }) {
+export default function Option({ img, onClick, text, link }) {
   return (
-   <div { ...styles.container } onClick={ () => onClick(word) }>
+   <div { ...styles.container } onClick={ () => onClick(link) }>
      <img { ...styles.image } src={ img } />
-     <div>{ word }</div>
+     <div>{ text }</div>
    </div>
   );
 }

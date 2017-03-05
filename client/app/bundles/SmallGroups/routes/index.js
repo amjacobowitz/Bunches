@@ -9,8 +9,9 @@ import Review from './student/review/index';
 
 import TeacherLanding from './teacher/landing';
 import Dashboard from './teacher/dashboard/index';
-import Klasses from './teacher/klasses/index';
-import Assignments from './teacher/assignments/index';
+import Groups from './teacher/groups/index';
+import Lessons from './teacher/lessons/index';
+import NewLesson from './teacher/lessons/new-lesson';
 import Analysis from './teacher/analysis/index';
 
 export default (store) => (
@@ -20,8 +21,9 @@ export default (store) => (
       <Route path="/student/:id/review" component={ Review } />
     <Route path="/teacher" component={ TeacherLanding } />
       <Route path="/teacher/:id/dashboard" component={ Dashboard } />
-      <Route path="/teacher/:id/classes" component={ Klasses } />
-      <Route path="/teacher/:id/assignments" component={ Assignments } />
+      <Route path="/teacher/:id/groups" component={ Groups } />
+      <Route path="/teacher/:id/lessons" component={ Lessons } />
+      <Route path="/teacher/:id/lessons/new" component={ NewLesson } />
       <Route path="/teacher/:id/analysis" component={ Analysis } />
   </Route>
 )
