@@ -27,11 +27,11 @@ import changeGroupName from '../../../actions/change-group-name';
 const groupTarget = {
   drop(props, monitor) {
     const student = monitor.getItem();
-    if(props.group.id !== student.groupId) {
+
+    if(!student.groups.includes(props.group.id)) {
       props.addStudentToGroup(
         student,
         props.group,
-        props.teacherId,
       );
     }
   }

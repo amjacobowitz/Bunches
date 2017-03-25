@@ -38,7 +38,7 @@ const styles = {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    height: '70px',
+    height: '40px',
     borderBottom: `1px solid ${PRIMARY}`
   }),
   iconContainer: css({

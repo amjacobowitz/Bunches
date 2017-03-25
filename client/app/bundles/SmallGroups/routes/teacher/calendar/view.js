@@ -79,7 +79,7 @@ const monthNames = [
   'December',
 ];
 
-class Calendar extends Component {
+class View extends Component {
   constructor(props) {
     super(props);
     this.state = { month: moment().month() };
@@ -110,9 +110,9 @@ class Calendar extends Component {
     const daysOfMonth = mapDaysOfMonth(month, beginningOfMonth, endOfMonth);
     return (
       <div>
+        <div { ...styles.month }>{ monthNames[month] }</div>
         <button onClick={ () => this.onClick('back') }>Back</button>
         <button onClick={ () => this.onClick('forward') }>Forward</button>
-        <div { ...styles.month }>{ monthNames[month] }</div>
         <table { ...styles.container }>
           {
             dayNames.map((dayName, i) => {
@@ -145,7 +145,7 @@ class Calendar extends Component {
                 <Day
                   numericalDate={ day.date() }
                   day={ day }
-                  stateDay={ stateDay }
+                  stateDay={ stateDay || {} }
                   key={ day+i }
                   index={ i }
                   lesson={ lesson }
@@ -206,4 +206,4 @@ const mapStateToProps = ({ days, lessons }, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(Calendar);
+export default connect(mapStateToProps, mapActionsToProps)(View);

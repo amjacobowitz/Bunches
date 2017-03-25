@@ -13,7 +13,7 @@ day.lessons << lesson
 4.times do
   grouping = Fabricate(:grouping)
   klass.groupings << grouping
-  lesson.grouping = grouping
+  lesson.groupings << grouping
 
   4.times do
     goal = Fabricate(:goal)
@@ -29,3 +29,7 @@ day.lessons << lesson
     goal.groups << group
   end
 end
+
+student = Student.first
+group = student.groups.first
+group.update(assignment: assignment)

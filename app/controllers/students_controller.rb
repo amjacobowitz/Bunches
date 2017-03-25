@@ -35,11 +35,9 @@ class StudentsController < ApplicationController
       first_name: student_params[:first_name],
       last_name: student_params[:last_name],
       id: student_params[:id],
-      group_id: student_params[:group_id]
     )
 
     if student_params[:goal_id]
-      goal = Goal.find(student_params[:goal_id])
       student.goals << goal
     end
 
@@ -47,7 +45,8 @@ class StudentsController < ApplicationController
       if student.save
         format.json { render :show, status: :ok }
       else
-        format.json { render json: student.errors, status: :unprocessable_entity } end
+        format.json { render json: student.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -58,12 +57,36 @@ class StudentsController < ApplicationController
     end
   end
 
-  private
-    def student
-      @student || @student = Student.find(params[:id])
+  def assignment
+    date = Date.new(Time.now.year, Time.now.month, Time.now.day)
+    day = Day.find_by(date: date)
+    lesson = day.lessons.where(teacher: student.klass.teacher)[0]
+    groups = lesson.groupings[0].groups
+    group = groups.find do |group|
+      group.students.include?(student)
     end
+    assignment = group.assignment
+    respond_to do |format|
+      if assignment
+        format.json { render locals: { assignment: assignment }, status: :ok }
+      else
+        format.json { render json: { error: 'No Assignment Found' } }
+      end
+    end
+  end
 
-    def student_params
-      params.require(:student).permit(:id, :last_name, :first_name, :group_id, :teacher_id, :goal_id)
-    end
+  private
+
+  def student
+    @student ||= Student.find(params[:id])
+  end
+
+  def goal
+    @goal ||= Goal.find(student_params[:goal_id])
+  end
+
+  def student_params
+    params.require(:student).permit(:id, :last_name, :first_name, :group_id, :teacher_id, :goal_id)
+  end
 end
+

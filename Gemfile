@@ -12,7 +12,7 @@ gem 'react_on_rails', '~>6'
 gem 'rails', '>= 5.0.0.rc2', '<5.1'
 # Use postgres as the database for Active Record
 gem 'pg'
-# Use paperclip for uploading attachments
+# Use aperclip for uploading attachments
 gem 'paperclip', '~> 5.0.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

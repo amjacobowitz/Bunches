@@ -8,6 +8,7 @@ require('rodal/lib/rodal.css');
 
 import selectDate from '../../../actions/select-date';
 import addAssignment from '../../../actions/add-assignment';
+import editAssignment from '../../../actions/edit-assignment';
 import fetchTeacher from '../../../actions/fetch-teacher';
 
 import TextArea from '../../../components/textarea';
@@ -18,20 +19,11 @@ import Trash from '../../../components/trash';
 
 import Assignment from './assignment';
 import LessonCreator from './lesson-creator';
-import Grouping from '../groups/grouping';
+import Vine from '../vines/grouping';
 
 import { PRIMARY, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-function checkGroupingId(groupings) {
-  if (groupings.length > 1) {
-    const groupingId = groupings[0].id;
-    return groupingId;
-  }
-
-  return '';
-}
-
-class NewLesson extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
 
@@ -43,19 +35,27 @@ class NewLesson extends Component {
       visible: false,
       title: '',
       directions: '',
-      groupingId: checkGroupingId(props.groupings),
-      selectedGroupingIndex: '',
+      editingAssignmentId: '',
       assignment: {},
+      vineId: props.editLesson.vineId || '',
       showAssignment: false,
     };
   }
 
   onClick = (value, name) => {
-    const teacherId = this.props.params.id;
-    if (name === 'create') {
-      const { title, directions } = this.state;
+    const { params: { id }, editAssignment, addAssignment } = this.props;
+    const { title, directions, editingAssignmentId } = this.state;
+    if (name === 'editOpen') {
+      this.setState({
+        visible: !this.state.visible,
+        title: value.title,
+        directions: value.directions,
+        editingAssignmentId: value.id
+      })
+    } else {
+      const assignmentFunction = name === 'edit' ? editAssignment : addAssignment;
       const assignment = { title, directions };
-      this.props.addAssignment(assignment, teacherId);
+      assignmentFunction(assignment, id, editingAssignmentId);
       this.toggleRodal();
     }
   }
@@ -70,11 +70,8 @@ class NewLesson extends Component {
     this.setState({ assignment: {}, showAssignment: false });
   }
 
-  onGroupingClick = (groupingId, index) => {
-    this.setState({
-      groupingId: groupingId,
-      selectedGroupingIndex: index
-    });
+  onVineClick = (value) => {
+    this.setState({ vineId: value });
   }
 
   onChange = (value, type) => {
@@ -82,13 +79,17 @@ class NewLesson extends Component {
   }
 
   toggleRodal = () => {
-    this.setState({ visible: !this.state.visible });
+    this.setState({
+      visible: !this.state.visible,
+      title: '',
+      directions: '',
+      editingAssignmentId: '',
+    });
   }
 
   render() {
-    const { groups, assignments, groupings, params } = this.props;
-    const { assignment, directions, title, groupingId, showAssignment } = this.state;
-
+    const { groups, assignments, vines, params, formType, editLesson } = this.props;
+    const { assignment, directions, title, showAssignment, vineId, editingAssignmentId } = this.state;
     const createButtonDisabled = !directions || !title;
     return(
       <div { ...styles.routeContainer }>
@@ -105,30 +106,32 @@ class NewLesson extends Component {
             {
               assignments.map((assignment, i) => {
                 return (
-                  <Assignment
+                  <div
                     key={ assignment.id+i }
-                    assignment={ assignment }
-                    onMouseEnter={ this.onMouseEnter }
-                    onMouseLeave={ this.onMouseLeave }
-                  />
+                    onClick={ () => this.onClick(assignment, 'editOpen') }
+                  >
+                    <Assignment
+                      assignment={ assignment }
+                      onMouseEnter={ this.onMouseEnter }
+                      onMouseLeave={ this.onMouseLeave }
+                    />
+                  </div>
                 )
               })
             }
           </div>
         </div>
         <div { ...styles.lessonArea }>
-          <div { ...styles.groupingsContainer }>
+          <Heading heading={ formType === 'edit' ? 'editing lesson' : 'new lesson' } />
+          <div { ...styles.vinesContainer }>
             {
-              groupings.map((gp, i) => {
-                const selected = this.state.selectedGroupingIndex === i;
-
+              vines.map((vine, i) => {
                 return (
-                  <Grouping
-                    grouping={ gp }
-                    onClick={ this.onGroupingClick }
-                    selected={ selected }
-                    key={ i+gp }
-                    index={ i }
+                  <Vine
+                    vine={ vine }
+                    onClick={ this.onVineClick }
+                    selectedVineId={ vineId }
+                    key={ i+vine.id }
                   />
                 )
               })
@@ -136,7 +139,10 @@ class NewLesson extends Component {
           </div>
           <div { ...styles.lessonCreatorContainer }>
             <LessonCreator
-              groupingId={ groupingId }
+              teacherId={ params.id }
+              vineId={ vineId }
+              formType={ formType }
+              editLesson={ editLesson || {} }
             />
           </div>
         </div>
@@ -155,22 +161,27 @@ class NewLesson extends Component {
         >
           <div { ...styles.newAssignmentContainer }>
             <Heading
-              heading='New Assignment'
+              heading={ editingAssignmentId ? 'Edit Assignment' : 'New Assignment' }
             />
+
             <TextInput
               onChange={ (value) => this.onChange(value, 'title') }
+              value={ this.state.title }
               placeholder='title'
             />
 
             <TextArea
               onChange={ (value) => this.onChange(value, 'directions') }
-              value={ '' }
+              value={ this.state.directions }
               placeholder="directions: "
             />
+
+            <div { ...styles.margin }/>
+
             <Button
               disabled={ createButtonDisabled }
-              onClick={ (e) => this.onClick(e.target.value, 'create') }
-              text='create'
+              onClick={ (e) => this.onClick(e.target.value, editingAssignmentId ? 'edit' : 'create') }
+              text={ editingAssignmentId ? 'edit' : 'new' }
             />
           </div>
         </Rodal>
@@ -184,6 +195,9 @@ const styles = {
     display: 'flex',
     textAlign: 'center',
   }),
+  margin: css({
+    marginTop: '20px',
+  }),
   sidebar: css({
     display: 'flex',
     flexDirection: 'column',
@@ -191,7 +205,7 @@ const styles = {
     paddingRight: '20px',
     borderRight: `1px solid ${PRIMARY}`,
   }),
-  groupingsContainer: css({
+  vinesContainer: css({
     display: 'flex',
     justifyContent: 'center',
     marginBottom: '10px',
@@ -246,6 +260,7 @@ const styles = {
 const mapActionsToProps = {
   selectDate,
   addAssignment,
+  editAssignment,
   fetchTeacher
 };
 
@@ -253,13 +268,17 @@ const mapStateToProps = ({
   assignments,
   groups,
   klasses,
-  groupings
-}) => ({
-  assignments: Object.values(assignments),
-  groups: Object.values(groups),
-  klasses: Object.values(klasses),
-  groupings: Object.values(groupings),
-});
+  groupings,
+  lessons,
+}, ownProps) => {
+  return {
+    assignments: Object.values(assignments),
+    groups: Object.values(groups),
+    klasses: Object.values(klasses),
+    vines: Object.values(groupings),
+    editLesson: lessons[ownProps.params.lessonId] || {}
+  }
+};
 
-NewLesson = DragDropContext(HTML5Backend)(NewLesson);
-export default connect(mapStateToProps, mapActionsToProps)(NewLesson);
+Form = DragDropContext(HTML5Backend)(Form);
+export default connect(mapStateToProps, mapActionsToProps)(Form);

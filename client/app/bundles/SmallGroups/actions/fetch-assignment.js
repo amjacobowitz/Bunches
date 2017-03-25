@@ -5,9 +5,9 @@ import {
 
 import { getAssignment } from '../api';
 
-export default function fetchAssignment(groupId) {
+export default function fetchAssignment(studentId) {
   return (dispatch) => {
-    return getAssignment(groupId)
+    return getAssignment(studentId)
     .then((assignment) => {
       dispatch({ type: FETCH_ASSIGNMENT, assignment });
     }).catch((err) => {

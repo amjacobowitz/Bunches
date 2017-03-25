@@ -5,12 +5,15 @@ Rails.application.routes.draw do
   resources :teachers
   resources :klasses
   resources :groups
+  put 'groups/:id/remove_student' => 'groups#remove_student'
   resources :assignments
   resources :students
+  get 'students/:id/assignment' => 'students#assignment'
   resources :goals
   resources :groupings
   resources :lessons
   resources :days
+  resources :submissions
 
   post 'auth/student' => 'auth#student'
   post 'auth/teacher' => 'auth#teacher'

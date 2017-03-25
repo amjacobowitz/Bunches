@@ -5,6 +5,9 @@ import { css } from 'glamor';
 const groups = require('!!url!./groups.png');
 const lessons = require('!!url!./lessons.png');
 const analysis = require('!!url!./analysis.png');
+const calendar = require('!!url!./calendar.png');
+const assignments = require('!!url!./assignments.png');
+const live = require('!!url!./live.png');
 
 import Button from '../../../components/button';
 import TextInput from '../../../components/text-input';
@@ -27,32 +30,56 @@ class Dashboard extends Component {
   }
 
   onClick = (word) => {
-    this.props.changePath(`/teacher/${this.props.params.id}/${word}`)
+    this.props.changePath(`/teacher/${this.props.params.id}/${word}`);
   }
 
   render() {
     const { params } = this.props;
     return (
       <div { ...styles.routeContainer }>
-        <div { ...styles.row }>
-          <Option
-            img={ groups }
-            text='vines'
-            link='groups'
-            onClick={ this.onClick }
-          />
-          <Option
-            img={ lessons }
-            text='lessons'
-            link='lessons'
-            onClick={ this.onClick }
-          />
-          <Option
-            img={ analysis }
-            text='analysis'
-            link='analysis'
-            onClick={ this.onClick }
-          />
+        <div { ...styles.rows }>
+          <div { ...styles.row }>
+            <Option
+              img={ groups }
+              text='vines'
+              link='vines'
+              onClick={ this.onClick }
+            />
+            <Option
+              img={ calendar }
+              text='calendar'
+              link='calendar'
+              onClick={ this.onClick }
+            />
+            <Option
+              img={ analysis }
+              text='analysis'
+              link='analysis'
+              onClick={ this.onClick }
+            />
+          </div>
+          <div { ...styles.row }>
+            <Option
+              img={ lessons }
+              text='lessons'
+              link='lessons'
+              onClick={ this.onClick }
+            />
+            <Option
+              img={ assignments }
+              text='assignments'
+              link='assignments'
+              onClick={ this.onClick }
+            />
+          </div>
+          <div { ...styles.row }>
+            <Option
+              img={ live }
+              text='live view'
+              link='live'
+              onClick={ this.onClick }
+            />
+          </div>
         </div>
       </div>
     );
@@ -70,15 +97,21 @@ const mapStateToProps = ({ klasses }) => ({
 
 const styles = {
   routeContainer: css({
+    marginTop: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
   }),
-  row: css({
-    marginTop: '40px',
+  rows: css({
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  row: css({
+    display: 'flex',
+    alignItems: 'center',
     justifyContent: 'stretch',
   }),
 }

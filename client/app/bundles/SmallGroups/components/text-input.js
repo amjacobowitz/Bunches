@@ -4,25 +4,22 @@ import { css } from 'glamor';
 export default class TextInput extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { text: '' }
   }
 
   onChange = (e) => {
     const value = e.target.value;
-    this.setState({ text: value });
-    this.props.onChange(value, this.props.name);
+    this.props.onChange(value);
   }
 
   render() {
-    const { style, placeholder } = this.props;
+    const { name, style, onChange, placeholder } = this.props;
 
     return (
       <input
         style={ styles(style) }
         placeholder={ placeholder }
-        onChange={ this.onChange }
-        value={ this.state.text }
+        onChange={ (e) => onChange(e.target.value, name) }
+        value={ this.props.value }
       />
     );
   }

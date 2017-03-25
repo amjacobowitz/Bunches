@@ -15,12 +15,13 @@ export default function Footer() {
 
 const styles = {
   container: css({
-    width: '100%',
     position: 'fixed',
     bottom: 0,
+    left: 0,
     height: '30px',
+    width: '100%',
     display: 'flex',
-    marginTop: '10px',
+    marginTop: '50px',
     alignItems: 'center',
     justifyContent: 'center',
     borderTop: `1px solid ${PRIMARY}`

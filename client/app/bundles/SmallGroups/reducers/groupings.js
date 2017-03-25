@@ -22,7 +22,7 @@ const formatToObjs = (records) => {
       result[r.id] = {
         id: r.id,
         title: r.title,
-        lessonId: r.lesson_id,
+        lessons: r.lessons.map((l) => l.id),
         klassId: r.klass_id,
         groups: r.groups.map((g) => {
           return g.id;
@@ -38,8 +38,15 @@ const formatToObjs = (records) => {
 
 const handlers = {
   [ADD_GROUPING]: (state, { grouping }) => {
-    const newState = { ...state, [grouping.id]: { ...grouping } };
-    return newState;
+    return { ...state, [grouping.id]:
+      {
+        id: grouping.id,
+        title: grouping.title,
+        lessons: [],
+        klassId: grouping.klass_id,
+        groups: [],
+      }
+    };
   },
   [ADD_GROUPINGS]: (state, { groupings }) => {
     return formatToObjs(groupings);

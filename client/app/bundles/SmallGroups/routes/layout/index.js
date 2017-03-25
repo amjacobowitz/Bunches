@@ -23,12 +23,11 @@ const styles = {
   routeContainer: css({
     display: 'flex',
     flexDirection: 'row',
-    height: '80vh',
   }),
   mainContainer: css({
     width: '80%',
     paddingTop: '20px',
-    paddingBottom: '20px',
+    paddingBottom: '40px',
     marginLeft: '10%',
   }),
 }

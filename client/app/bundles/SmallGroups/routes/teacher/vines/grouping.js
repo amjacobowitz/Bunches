@@ -4,10 +4,10 @@ import { DragSource } from 'react-dnd';
 
 import { LIGHT_GRAY, BLACK, LIGHT_PRIMARY, WHITE } from '../../../palette';
 
-const groupingSource = {
+const vineSource = {
   beginDrag(props) {
-    const { grouping } = props;
-    return { ...grouping };
+    const { vine } = props;
+    return { ...vine };
   }
 };
 
@@ -19,36 +19,36 @@ function collect(connect, monitor) {
 }
 
 
-class Grouping extends Component {
+class Vine extends Component {
   constructor(props) {
     super(props);
   }
 
   onClick = () => {
-    const { grouping, index } = this.props;
-    this.props.onClick(grouping.id, index)
+    const { vine, index } = this.props;
+    this.props.onClick(vine.id, index)
   }
 
   render() {
-    const { isDragging, connectDragSource } = this.props;
+    const { isDragging, connectDragSource, selectedVineId, vine } = this.props;
 
-    const groupingStyle = this.props.selected ?
-      styles.groupingSelected :
-      styles.grouping;
+    const vineStyle = vine.id === selectedVineId ?
+      styles.vineSelected :
+      styles.vine;
 
     return connectDragSource(
       <div
-        { ...groupingStyle }
-        onClick={ this.onClick }
+        { ...vineStyle }
+        onClick={ () => this.onClick(vine.id)  }
       >
-        { this.props.grouping.title }
+        { vine.title }
       </div>
     )
   }
 }
 
 const styles = {
-  grouping: css({
+  vine: css({
     fontSize: '14px',
     fontWeight: 100,
     fontFamily: 'BlinkMacSystemFont',
@@ -64,7 +64,7 @@ const styles = {
       backgroundColor: LIGHT_PRIMARY,
     }
   }),
-  groupingSelected: css({
+  vineSelected: css({
     fontSize: '14px',
     fontWeight: 100,
     fontFamily: 'BlinkMacSystemFont',
@@ -84,4 +84,4 @@ const styles = {
   }),
 }
 
-export default DragSource('grouping', groupingSource, collect)(Grouping);
+export default DragSource('vine', vineSource, collect)(Vine);

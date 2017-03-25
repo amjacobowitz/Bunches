@@ -24,7 +24,8 @@ const styles = {
     height: '200px',
     width: '200px',
     opacity: 0.5,
-    margin: '40px',
+    marginTop: '-20px',
+    marginRight: '5px',
     cursor: 'pointer',
     ':hover': {
       border: `3px solid ${PRIMARY}`,
@@ -34,6 +35,5 @@ const styles = {
   image: css({
     width: '40%',
     height: '40%',
-    marginBottom: '10px'
   }),
 }

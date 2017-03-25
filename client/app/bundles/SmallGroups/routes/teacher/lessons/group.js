@@ -13,8 +13,8 @@ import {
   LIGHT_GRAY,
 } from '../../../palette';
 
-const groupImg = require('!!url!../groups/group.png');
-const goal = require('!!url!../groups/goal.png');
+const groupImg = require('!!url!../vine/group.png');
+const goal = require('!!url!../vine/goal.png');
 
 import { selectAllStudents } from '../../../selectors/students';
 

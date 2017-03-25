@@ -20,7 +20,7 @@ export function authorizeStudent(student) {
     {
       student: {
         pin: student.pin,
-        name: student.name
+        first_name: student.name
       }
     }
   );
@@ -35,8 +35,8 @@ export function getStudent(studentId) {
   return fetchRequest(url, options);
 }
 
-export function getAssignment(groupId) {
-  const url = route(`/groups/${groupId}/assignments`);
+export function getAssignment(studentId) {
+  const url = route(`/students/${studentId}/assignment`);
   const options = genHTTPOptions('GET', null);
 
   return fetchRequest(url, options);
@@ -57,17 +57,42 @@ export function createAssignment(assignment, teacherId) {
   return fetchRequest(url, options);
 }
 
-export function putAssignment(groupId, assignmentId) {
-  const url = route(`/assignments/${assignmentId}`);
+export function putAssignment(assignment, teacherId) {
+  const url = route(`/assignments/${assignment.id}`);
   const options = genHTTPOptions('PUT',
     {
       assignment: {
-        id: assignmentId,
-        completed: true,
-        submitted: true,
-      }
+        directions: assignment.directions,
+        title: assignment.title,
+      },
+    }
+  )
+
+  return fetchRequest(url, options);
+}
+
+export function createSubmission(studentId, assignmentId, raw) {
+  const url = route(`/submissions`);
+  const options = genHTTPOptions('POST',
+    {
+      submission: {
+        student_id: studentId,
+        assignment_id: assignmentId,
+      },
+      answer: raw
     }
   );
+
+  return fetchRequest(url, options);
+}
+
+export function putSubmission(submissionId) {
+  const url = route(`/submissions/${submissionId}`);
+  const options = genHTTPOptions('PUT', {
+    submission: {
+
+    }
+  })
 
   return fetchRequest(url, options);
 }
@@ -99,22 +124,38 @@ export function groupFromAssignment(assignmentId, groupId) {
   return fetchRequest(url, options);
 }
 
-
-export function updateLesson(assignmentId, lessonId) {
-  const url = route(`/lessons/${lessonId}`);
-  const options = genHTTPOptions('PUT',
+export function createLesson(title, vineId, assignmentIds, teacherId) {
+  const url = route(`/lessons`);
+  const options = genHTTPOptions('POST',
     {
       lesson: {
-        id: lessonId,
-        assignment_id: assignmentId
+        title,
+        grouping_id: vineId,
+        assignment_ids: assignmentIds,
+        teacher_id: teacherId
       }
     }
-  );
+  )
 
   return fetchRequest(url, options);
 }
 
-export function lessonToDay(lessonId, date, teacherId) {
+export function putLesson(title, vineId, assignmentIds, lessonId) {
+  const url = route(`/lessons/${lessonId}`);
+  const options = genHTTPOptions('PUT',
+    {
+      lesson: {
+        title,
+        grouping_id: vineId,
+        assignment_ids: assignmentIds,
+      }
+    }
+  )
+
+  return fetchRequest(url, options);
+}
+
+export function lessonToDay(lessonId, date, teacherId, assignmentIds) {
   const url = route(`/lessons/${lessonId}`);
   const options = genHTTPOptions('PUT',
     {
@@ -124,7 +165,8 @@ export function lessonToDay(lessonId, date, teacherId) {
           year: date.year,
           month: date.month,
           day: date.day,
-        }
+        },
+        assignment_ids: assignmentIds
       },
       teacher_id: teacherId
     }
@@ -206,15 +248,11 @@ export function destroyLesson(lesson) {
 }
 
 export function studentToGroup(student, groupId, teacherId) {
-  const url = route(`/students/${student.id}`);
+  const url = route(`/groups/${groupId}`);
   const options = genHTTPOptions('PUT',
     {
-      student: {
-        teacher_id: teacherId,
-        first_name: student.firstName,
-        last_name: student.lastName,
-        group_id: groupId,
-        id: student.id
+      group: {
+        student_id: student.id
       }
     }
   );
@@ -222,16 +260,12 @@ export function studentToGroup(student, groupId, teacherId) {
   return fetchRequest(url, options);
 }
 
-
-export function studentFromGroup(student, teacherId) {
-  const url = route(`/students/${student.id}`);
+export function studentFromGroup(student, groupId) {
+  const url = route(`/groups/${groupId}/remove_student`);
   const options = genHTTPOptions('PUT',
     {
-      student: {
-        teacher_id: teacherId,
-        group_id: '',
-        id: student.id,
-        name: student.name,
+      group: {
+        student_id: student.id
       }
     }
   );

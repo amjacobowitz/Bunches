@@ -12,10 +12,10 @@ import {
 
 const initialState = {};
 
-const removeAssignment = (assignmentId, assignments) => {
-  const index = assignments.indexOf(assignmentId);
-  const before = assignments.slice(0, index);
-  const after = assignments.slice(index + 1, assignments.length);
+const removeAssociation = (id, records) => {
+  const index = records.indexOf(id);
+  const before = records.slice(0, index);
+  const after = records.slice(index + 1, records.length);
   return before.concat(after);
 };
 
@@ -25,8 +25,11 @@ const formatToObjs = (records) => {
        result[r.id] = {
          id: r.id,
          title: r.title,
+         vineId: r.groupings.map((g) => g.id)[0],
          assignments: r.assignments.map((a) => a.id),
-         dayId: r.day_id
+         days: r.days.map((day) => {
+           return day.id;
+         })
        };
        return result;
     }, {});
@@ -42,8 +45,9 @@ const handlers = {
       [lesson.id]: {
         id: lesson.id,
         title: lesson.title,
+        vineId: lesson.groupings.map((g) => g.id)[0],
         assignments: lesson.assignments.map((a) => a.id),
-        dayId: lesson.day_id
+        days: lesson.days.map((day) => day.id )
       }
     };
   },
@@ -64,15 +68,17 @@ const handlers = {
   },
   [REMOVE_ASSIGNMENT_FROM_LESSON]: (state, { assignmentId, lessonId}) => {
     const lesson = state[lessonId];
-    return { ...state, [lessonId]: { ...lesson, assignments: removeAssignment(assignmentId, lesson.assignments) } };
+    const assignments = removeAssociation(assignmentId, lesson.assignments);
+    return { ...state, [lessonId]: { ...lesson, assignments } };
   },
   [ADD_GROUPING_TO_LESSON]: (state, { groupingId, lessonId }) => {
     const lesson = state[lessonId];
-    return { ...state, [lessonId]: { ...lesson, groupingId: groupingId } };
+    return { ...state, [lessonId]: { ...lesson, groupings: groupings.concat(groupingId) } };
   },
   [REMOVE_GROUPING_FROM_LESSON]: (state, { groupingId, lessonId }) => {
     const lesson = state[lessonId];
-    return { ...state, [lessonId]: { ...lesson, groupingId: '' } };
+    const groupings = removeAssociation(groupingId, lesson.groupings);
+    return { ...state, [lessonId]: { ...lesson, groupings } };
   },
 }
 

@@ -1,1 +1,1 @@
-json.extract! assignment, :directions, :title, :date, :completed, :submitted
+json.extract! assignment, :directions, :title, :date

@@ -9,10 +9,10 @@ export const selectAllGroups = createSelector(
   }
 )
 
-export function selectAllGroupsInGrouping(groups, groupingId) {
+export function selectAllGroupsInGrouping(groups, vineId) {
   const allGroups = selectAllGroups(groups);
   const groupsInGrouping = allGroups.filter((group) => {
-    return group.groupingId == groupingId
+    return group.groupingId == vineId
   })
   return groupsInGrouping;
 }

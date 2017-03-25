@@ -6,31 +6,21 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Rodal from 'rodal';
 require('rodal/lib/rodal.css');
 
-import Grouper from './grouper'
-import Grouping from './grouping';
+import Vine from './grouping';
 import Trash from '../../../components/trash';
 import Button from '../../../components/button';
 
-import addGrouping from '../../../actions/add-grouping';
+import addVine from '../../../actions/add-grouping';
 import fetchTeacher from '../../../actions/fetch-teacher';
+import changePath from '../../../actions/change-path';
 
-import { selectAllStudents } from '../../../selectors/students';
 import { selectAllGroupings } from '../../../selectors/groupings';
 
 import { LIGHT_PRIMARY, WHITE } from '../../../palette';
 
 const plus = require('!!url!./plus.png');
 
-function checkGroupingId(groupings) {
-  if (groupings.length > 1) {
-    const groupingId = groupings[0].id;
-    return groupingId;
-  }
-
-  return '';
-}
-
-class Groups extends Component {
+class Vines extends Component {
   constructor(props) {
     super(props);
 
@@ -41,70 +31,51 @@ class Groups extends Component {
     this.state = {
       visible: false,
       title: '',
-      groupingId: checkGroupingId(props.groupings),
-      selectedGroupingIndex: 0
     };
   }
 
-  onClick = (groupingId, index) => {
-    this.setState({
-      groupingId: groupingId,
-      selectedGroupingIndex: index
-    });
+  onClick = (vineId) => {
+    this.props.changePath(`/teacher/${this.props.params.id}/vines/${vineId}`);
   }
 
   onChange = (e) => {
     this.setState({ title: e.target.value })
   }
 
-  addGrouping = (e) => {
+  addVine = (e) => {
     e.preventDefault();
-    const { params, addGrouping, groupings } = this.props;
+    const { params, addVine, vines } = this.props;
     const { title } = this.state;
-
-    const grouping = { title };
+    const vine = { title };
     const teacherId = params.id;
     this.toggleRodal();
 
-    addGrouping(grouping, teacherId)
-    .then((groupingId) => {
-      this.setState({
-        title: '',
-        groupingId: groupingId,
-        selectedGroupingIndex: groupings.length
-      });
-    });
+    addVine(vine, teacherId);
   }
 
   toggleRodal = () => {
     this.setState({ visible: !this.state.visible })
   }
 
-  setGroupingId = (groupingId) => {
-    this.setState({ groupingId: groupingId });
-  }
-
   render() {
-    const { groupings, params, groups, students } = this.props;
-    const { groupingId } = this.state;
+    const { vines, children, params, groups } = this.props;
+
     const that = this;
-    const groupingsExist = Object.values(groupings).length >= 1;
+    const vinesExist = Object.values(vines).length >= 1;
 
     return(
       <div { ...styles.routeContainer }>
-        <div { ...styles.groupingsContainer } >
+        <div { ...styles.vinesContainer } >
           <Trash teacherId={ params.id }/>
-          <AddGrouping toggleRodal={ this.toggleRodal } />
+          <AddVine toggleRodal={ this.toggleRodal } />
           {
-            groupings.map((gp, i) => {
-              const selected = this.state.selectedGroupingIndex == i;
+            vines.map((vine, i) => {
               return (
-                <Grouping
-                  grouping={ gp }
+                <Vine
+                  vine={ vine }
+                  selectedVineId={ params.vineId }
                   onClick={ that.onClick }
-                  selected={ selected }
-                  key={ i+gp }
-                  index={ i }
+                  key={ i+vine.id }
                 />
               )
             })
@@ -112,28 +83,20 @@ class Groups extends Component {
         </div>
 
         {
-          groupingsExist && (
-            <Grouper
-              id={ params.id }
-              groupingId={ groupingId }
-              setGroupingId={ this.setGroupingId }
-            />
+          !vinesExist && (
+            <div { ...styles.noVines }> Create a new vine to get started! </div>
           )
         }
 
-        {
-          !groupingsExist && (
-            <div { ...styles.noGroupings }> Create a new grouping to get started! </div>
-          )
-        }
+        { children }
 
         <Rodal
           visible={ this.state.visible }
           height={ 200 }
           onClose={ this.toggleRodal }
         >
-          <div { ...styles.newGroupingTitle }>New Grouping</div>
-          <form onSubmit={ this.addGrouping }>
+          <div { ...styles.newVineTitle }>New Vine</div>
+          <form onSubmit={ this.addVine }>
             <input
               { ...styles.input }
               value={ this.state.title }
@@ -152,9 +115,9 @@ class Groups extends Component {
   }
 }
 
-function AddGrouping({ toggleRodal }) {
+function AddVine({ toggleRodal }) {
   return(
-    <div { ...styles.addGrouping } >
+    <div { ...styles.addVine } >
       <img { ...styles.plus } onClick={ toggleRodal } src={ plus } />
     </div>
   )
@@ -166,23 +129,23 @@ const styles = {
     flexDirection: 'column',
     textAlign: 'center',
   }),
-  groupingsContainer: css({
+  vinesContainer: css({
     display: 'flex',
     alignItems: 'center',
     marginBottom: '10px',
   }),
-  groupings: css({
+  vines: css({
     display: 'flex',
     justifyContent: 'space-between',
   }),
-  addGrouping: css({
+  addVine: css({
   }),
   plus: css({
     width: '25px',
     height: '25px',
     cursor: 'pointer',
   }),
-  newGroupingTitle: css({
+  newVine: css({
     fontSize: '20px',
     fontWeight: 100,
     fontFamily: 'BlinkMacSystemFont',
@@ -198,7 +161,7 @@ const styles = {
     width: '80%',
     marginBottom: '20px'
   }),
-  noGroupings: css({
+  noVines: css({
     marginTop: '40px',
     fontFamily: 'BlinkMacSystemFont',
     fontSize: '20px',
@@ -207,20 +170,19 @@ const styles = {
 }
 
 const mapActionsToProps = {
-  addGrouping,
+  addVine,
+  changePath,
   fetchTeacher,
 };
 
-const mapStateToProps = ({ groupings, students, klasses }) => {
-  const allStudents = selectAllStudents(students);
-  const allGroupings = selectAllGroupings(groupings);
+const mapStateToProps = ({ groupings, klasses }) => {
+  const allVines = selectAllGroupings(groupings);
 
   return {
-    groupings: allGroupings,
-    students: allStudents,
+    vines: allVines,
     klasses: Object.values(klasses),
   }
 };
 
-Groups = DragDropContext(HTML5Backend)(Groups);
-export default connect(mapStateToProps, mapActionsToProps)(Groups);
+Vines = DragDropContext(HTML5Backend)(Vines);
+export default connect(mapStateToProps, mapActionsToProps)(Vines);

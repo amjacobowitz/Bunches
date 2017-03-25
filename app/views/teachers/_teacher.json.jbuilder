@@ -9,22 +9,26 @@ end
 
 json.assignments teacher.assignments do |assignment|
   json.id assignment.id
-  json.lesson_id assignment.lesson_id
+  json.lessons assignment.lessons
   json.directions assignment.directions
   json.title assignment.title
   json.groups assignment.groups
+  json.days assignment.days
 end
 
 json.lessons teacher.lessons do |lesson|
   json.id lesson.id
   json.title lesson.title
   json.assignments lesson.assignments
+  json.days lesson.days
+  json.groupings lesson.groupings
 end
 
 json.days teacher.days do |day|
   json.id day.id
   json.date day.date
   json.lessons day.lessons
+  json.assignments day.assignments
 end
 
 json.klasses teacher.klasses do |klass|
@@ -35,7 +39,7 @@ json.klasses teacher.klasses do |klass|
   json.groupings klass.groupings do |grouping|
     json.id grouping.id
     json.title grouping.title
-    json.lesson_id grouping.lesson_id
+    json.lessons grouping.lessons
     json.klass_id grouping.klass_id
 
     json.groups grouping.groups do |group|
@@ -52,7 +56,7 @@ json.klasses teacher.klasses do |klass|
     json.id student.id
     json.first_name student.first_name
     json.last_name student.last_name
-    json.group_id student.group_id
+    json.groups student.group_ids
     json.klass_id student.klass_id
     json.goal_id student.goal_id
   end

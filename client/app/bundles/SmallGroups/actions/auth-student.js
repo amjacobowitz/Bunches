@@ -11,9 +11,9 @@ export default function authStudent(student) {
     return authorizeStudent(student)
     .then((stu) => {
       dispatch({ type: AUTH_STUDENT, pin: student.pin, stu });
-    }).then(() => {
-      const { current_student: { id } } = getState();
-      changePath(`student/${id}/assignment`);
+      return stu;
+    }).then((stu) => {
+      dispatch(changePath(`student/${stu.id}/assignment`));
     }).catch((err) => {
       console.warn(err);
       dispatch({ type: AUTH_STUDENT_FAILURE })

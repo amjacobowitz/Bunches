@@ -1,6 +1,6 @@
 class Lesson < ApplicationRecord
-  has_many :assignments
+  has_and_belongs_to_many :assignments
   belongs_to :teacher
   has_and_belongs_to_many :days
-  has_one :grouping
+  has_and_belongs_to_many :groupings
 end

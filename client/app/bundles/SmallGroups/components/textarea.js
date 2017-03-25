@@ -14,6 +14,7 @@ export default function TextArea({ charCount, onChange, placeholder, value}) {
         { ...styles.textarea }
         onChange={ (e) => onChange(e.target.value) }
         placeholder={ placeholder }
+        value={ value }
       />
       {
         charCount && (
@@ -32,14 +33,14 @@ const styles = {
     flexDirection: 'column',
     borderRadius: '2px',
     border: `1px solid ${LIGHT_GRAY}`,
+    padding: '1em',
+    height: '300px',
   }),
   textarea: css({
     color: GRAY,
     fontSize: '1.25em',
     fontWeight: 300,
-    padding: '1em',
     resize: 'none',
-    marginTop: '20px',
     border: 'none',
     outline: 'none',
   }),

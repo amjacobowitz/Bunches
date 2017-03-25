@@ -1,1 +1,1 @@
-json.extract! lesson, :id, :days
+json.extract! lesson, :id, :days, :assignments, :title, :groupings

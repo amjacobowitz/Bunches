@@ -15,7 +15,7 @@ class AuthController < ApplicationController
     klass = Klass.find_by(pin: student_params[:pin])
     students = klass.students
     student = students.find do |student|
-      student.name == student_params[:name]
+      student.first_name == student_params[:first_name]
     end
 
     if student
@@ -32,6 +32,6 @@ class AuthController < ApplicationController
   end
 
   def student_params
-    params.require(:student).permit(:name, :pin)
+    params.require(:student).permit(:first_name, :pin)
   end
 end

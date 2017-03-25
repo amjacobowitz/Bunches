@@ -48,14 +48,12 @@ const handlers = {
   [ADD_GROUP]: (state, { group }) => {
     return { ...state, [group.id]:
       {
-        id: r.id,
-        name: r.name,
-        groupingId: r.grouping_id,
-        assignmentId: r.assignment_id,
-        goalId: r.goal_id,
-        students: r.students.map((s) => {
-          return s.id;
-        }),
+        id: group.id,
+        name: '',
+        groupingId: group.grouping_id,
+        assignmentId: '',
+        goalId: '',
+        students: [],
       }
     };
   },
@@ -81,7 +79,7 @@ const handlers = {
   [REMOVE_STUDENT_FROM_GROUP]: (state, { studentId, groupId }) => {
     const group = state[groupId];
     const students = removeStudent(studentId, group.students);
-    return { ...state, [groupId]: { ...group, students: students } };
+    return { ...state, [groupId]: { ...group, students } };
   },
   [ADD_GROUPING_TO_GROUP]: (state, { groupingId, groupId }) => {
     const group = state[groupId];

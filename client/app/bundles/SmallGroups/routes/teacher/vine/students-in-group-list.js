@@ -18,6 +18,7 @@ class StudentsInGroupList extends Component {
                   key={ i }
                   number={ i + 1 }
                   student={ student }
+                  fromGroup={ group }
                 />
               )
             })
@@ -41,9 +42,7 @@ const styles = {
   }),
 }
 
-const mapActionsToProps = {
-
-}
+const mapActionsToProps = {};
 
 const mapStateToProps = ({ groups, students }, ownProps) => {
   const group = groups[ownProps.groupId];

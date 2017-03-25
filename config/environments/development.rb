@@ -27,7 +27,7 @@ Rails.application.configure do
   end
 
   # Enable ImageMagic for Paperclip attachments
-  Paperclip.options[:command_path] = '/usr/local/bin/'
+  Paperclip.options[:command_path] = '/usr/local/bin/convert'
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 

@@ -3,10 +3,9 @@ import fetchAssignment from './fetch-assignment';
 
 export default function fetchStudentAndAssignment(id) {
   return (dispatch, getState) => {
-    return dispatch(fetchStudent(id)).then(() => {
-      const { student: { group } } = getState();
-
-      dispatch(fetchAssignment(group.id));
+    return dispatch(fetchStudent(id))
+    .then(() => {
+      dispatch(fetchAssignment(id));
     }).catch((err) => {
       console.warn(err);
       dispatch({ type: AUTH_STUDENT_FAILURE })

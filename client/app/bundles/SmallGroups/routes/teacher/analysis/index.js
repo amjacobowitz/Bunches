@@ -22,8 +22,13 @@ const mapActionsToProps = {
 };
 
 const mapStateToProps = ({
-}) => ({
-});
+
+}) => {
+
+  return {
+
+  };
+}
 
 const styles = {
   routeContainer: css({

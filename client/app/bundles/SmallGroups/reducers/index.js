@@ -14,6 +14,7 @@ import lessons from './lessons';
 import review from './review';
 import student from './student';
 import students from './students';
+import submission from './submission';
 
 export default combineReducers({
   assignment,
@@ -30,4 +31,5 @@ export default combineReducers({
   routing,
   student,
   students,
+  submission,
 })

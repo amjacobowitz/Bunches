@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { css } from 'glamor';
 import { DragSource } from 'react-dnd';
+import { connect } from 'react-redux';
+import { PRIMARY, LIGHT_PRIMARY, GRAY, LIGHTEST_GRAY, WHITE } from '../../../palette';
 
-const calendarLessonSource = {
+const lessonSource = {
   beginDrag(props) {
     const { lesson } = props;
     return { ...lesson };
@@ -16,7 +18,7 @@ function collect(connect, monitor) {
   };
 }
 
-class CalendarLesson extends Component {
+class Lesson extends Component {
   render() {
     const { isDragging, connectDragSource, lesson, onDoubleClick } = this.props;
     const lessonStyle = isDragging ? { ...styles.dragging, ...styles.default } : styles.default;
@@ -28,10 +30,13 @@ class CalendarLesson extends Component {
   }
 }
 
+const mapActionsToProps = { };
+
 const styles = {
   default: css({
     display: 'flex',
     alignItems: 'center',
+    height: '50px',
     justifyContent: 'center',
     cursor: 'pointer',
   }),
@@ -40,4 +45,5 @@ const styles = {
   }),
 }
 
-export default DragSource('lesson', calendarLessonSource, collect)(CalendarLesson);
+Lesson = DragSource('lesson', lessonSource, collect)(Lesson);
+export default connect(null, mapActionsToProps)(Lesson);

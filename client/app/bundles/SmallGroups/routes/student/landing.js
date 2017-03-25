@@ -33,13 +33,13 @@ class Landing extends Component {
     return (
       <div { ...styles.routeContainer }>
         <TextInput
-          name={'name'}
+          name='name'
           onChange={ this.onChange }
           placeholder='first name'
           style={ styles.input }
         />
         <TextInput
-          name={'pin'}
+          name='pin'
           onChange={ this.onChange }
           placeholder='pin'
           style={ styles.input }

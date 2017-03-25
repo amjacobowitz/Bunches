@@ -10,13 +10,7 @@ export default function addGroup(groupingId) {
   return (dispatch) => {
     return createGroup(groupingId)
     .then((g) => {
-      const group = {
-        id: g.id,
-        title: '',
-        students: [],
-        groupingId: groupingId,
-      };
-      dispatch({ type: ADD_GROUP, group });
+      dispatch({ type: ADD_GROUP, group: g });
       dispatch({ type: ADD_GROUP_TO_GROUPING, groupId: g.id, groupingId });
     }).catch((err) => {
       console.warn(err)

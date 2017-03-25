@@ -15,7 +15,7 @@ const trashTarget = {
     const item = monitor.getItem();
     if(item.hasOwnProperty('firstName')) {
       props.removeStudent(item, props.teacherId);
-    } else if(item.hasOwnProperty('dayId')) {
+    } else if(item.hasOwnProperty('assignments')) {
       props.removeLesson(item, props.teacherId);
     } else if (item.hasOwnProperty('groups')) {
       props.removeAssignment(item, props.teacherId);

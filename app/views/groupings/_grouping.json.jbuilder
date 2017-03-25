@@ -1,1 +1,1 @@
-json.extract! grouping, :id, :title, :groups
+json.extract! grouping, :id, :title, :groups, :lessons

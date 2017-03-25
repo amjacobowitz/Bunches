@@ -57,11 +57,12 @@ class GroupingsController < ApplicationController
   end
 
   private
-    def grouping
-      @grouping ||= Grouping.find(params[:id])
-    end
 
-    def grouping_params
-      params.require(:grouping).permit(:title, :teacher_id)
-    end
+  def grouping
+    @grouping ||= Grouping.find(params[:id])
+  end
+
+  def grouping_params
+    params.require(:grouping).permit(:title, :teacher_id)
+  end
 end

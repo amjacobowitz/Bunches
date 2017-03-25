@@ -30,7 +30,11 @@ class GroupsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
+   if params[:group][:student_id]
+     group.students << student
+   end
+
+   respond_to do |format|
       if group.update(group_params)
         format.json { render :show, status: :ok }
       else
@@ -48,9 +52,21 @@ class GroupsController < ApplicationController
     end
   end
 
+  def remove_student
+    group.students.delete(student)
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
+
   private
     def group
       @group ||= Group.find(params[:id])
+    end
+
+    def student
+      @student ||= Student.find(params[:group][:student_id])
     end
 
     def assignment

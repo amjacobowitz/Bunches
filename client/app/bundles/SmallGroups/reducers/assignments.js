@@ -3,19 +3,22 @@ import {
   ADD_ASSIGNMENT,
   ADD_ASSIGNMENTS,
   ADD_GROUP_TO_ASSIGNMENT,
+  ADD_LESSON_TO_ASSIGNMENT,
+  EDIT_ASSIGNMENT,
   REMOVE_ASSIGNMENT,
   REMOVE_GROUP_FROM_ASSIGNMENT,
   REMOVE_LESSON_FROM_ASSIGNMENT,
+  REMOVE_LESSONS_FROM_ASSIGNMENT,
   CHANGE_DIRECTIONS,
   CHANGE_TITLE,
 } from '../actions/index';
 
 const initialState = {};
 
-const removeGroup = (groupId, groups) => {
-  const index = groups.indexOf(groupId);
-  const before = groups.slice(0, index);
-  const after = groups.slice(index + 1, groups.length);
+const removeAssociation = (id, records) => {
+  const index = records.indexOf(id);
+  const before = records.slice(0, index);
+  const after = records.slice(index + 1, records.length);
   return before.concat(after);
 };
 
@@ -24,11 +27,12 @@ const formatToObjs = (records) => {
     const results = records.reduce((result, r) => {
        result[r.id] = {
          id: r.id,
-         lessonId: r.lesson_id,
+         lessons: r.lessons.map((l) => l.id),
          teacherId: r.teacher_id,
          directions: r.directions,
          title: r.title,
          groups: r.groups.map((s) => s.id),
+         days: r.days.map((d) => d.id),
        };
        return result;
     }, {});
@@ -42,16 +46,21 @@ const handlers = {
   [ADD_ASSIGNMENT]: (state, { assignment }) => {
     return { ...state, [assignment.id]: {
         id: assignment.id,
-        lessonId: assignment.lesson_id,
+        lessons: assignment.lessons.map((l) => l.id),
         teacherId: assignment.teacher_id,
         directions: assignment.directions,
         title: assignment.title,
-        groups: assignment.groups.map((s) => s.id ),
+        groups: assignment.groups.map((s) => s.id),
+        days: assignment.days.map((d) => d.id),
       }
     };
   },
   [ADD_ASSIGNMENTS]: (state, { assignments }) => {
     return formatToObjs(assignments);
+  },
+  [EDIT_ASSIGNMENT]: (state, { assignment }) => {
+    delete state[assignment.id];
+    return { ...state, [assignment.id]: { ...assignment } };
   },
   [REMOVE_ASSIGNMENT]: (state, { assignmentId }) => {
     delete state[assignmentId];
@@ -64,7 +73,12 @@ const handlers = {
   },
   [REMOVE_GROUP_FROM_ASSIGNMENT]: (state, { assignmentId, groupId }) => {
     const assignment = state[assignmentId];
-    return { ...state, [assignmentId]: { ...assignment, groups: removeGroup(groupId, assignment.groups) } };
+    return { ...state, [assignmentId]: { ...assignment, groups: removeAssociation(groupId, assignment.groups) } };
+  },
+  [ADD_LESSON_TO_ASSIGNMENT]: (state, { lessonId, assignmentId }) => {
+    const assignment = state[assignmentId];
+    const lessons = assignment.lessons;
+    return { ...state, [assignmentId]: { ...assignment, lessons: lessons.concat(lessonId)}}
   },
   [CHANGE_DIRECTIONS]: (state, { assignmentId, directions }) => {
     const assignment = state[assignmentId];
@@ -76,8 +90,12 @@ const handlers = {
   },
   [REMOVE_LESSON_FROM_ASSIGNMENT]: (state, { assignmentId, lessonId }) => {
     const assignment = state[assignmentId];
-    return { ...state, [assignmentId]: { ...assignment, lessonId: '' } };
-  }
+    return { ...state, [assignmentId]: { ...assignment, lessons: removeAssociation(lessonId, assignment.lessons) } };
+  },
+  [REMOVE_LESSONS_FROM_ASSIGNMENT]: (state, { assignmentId }) => {
+    const assignment = state[assignmentId];
+    return { ...state, [assignmentId]: { ...assignment, lessons: [] } };
+  },
 }
 
 export default createReducer(initialState, handlers);

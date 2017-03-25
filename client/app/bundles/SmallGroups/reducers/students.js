@@ -26,7 +26,7 @@ const formatToObjs = (records) => {
       id: r.id,
       firstName: r.first_name,
       lastName: r.last_name,
-      groupId: r.group_id,
+      groups: r.groups,
       klassId: r.klass_id,
       goalId: r.goal_id,
     }
@@ -41,7 +41,8 @@ const handlers = {
         firstName: camelCase(student.first_name),
         lastName: camelCase(student.last_name),
         id: student.id,
-        goalId: student.goal_id
+        goalId: student.goal_id,
+        groups: [],
       }
     };
   },
@@ -52,13 +53,14 @@ const handlers = {
     delete state[studentId];
     return { ...state };
   },
-  [ADD_GROUP_TO_STUDENT]: (state, { studentId, groupId}) => {
+  [ADD_GROUP_TO_STUDENT]: (state, { studentId, groupId }) => {
     const student = state[studentId];
-    return { ...state, [studentId]: { ...student, groupId } };
+    return { ...state, [studentId]: { ...student, groups: student.groups.concat(groupId) } };
   },
   [REMOVE_GROUP_FROM_STUDENT]: (state, { studentId, groupId }) => {
     const student = state[studentId];
-    return { ...state, [studentId]: { ...student, groupId } };
+    const groups = removeAssociation(groupId, student.groups);
+    return { ...state, [studentId]: { ...student, groups } };
   },
   [ADD_GOAL_TO_STUDENT]: (state, { goalId, studentId }) => {
     const student = state[studentId];

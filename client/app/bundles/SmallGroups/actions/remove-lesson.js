@@ -10,10 +10,9 @@ export default function removeLesson(lesson, teacherId) {
   return (dispatch, getState) => {
     return destroyLesson(lesson, teacherId)
     .then(() => {
-
       if (lesson.assignments) {
         lesson.assignments.forEach((assignmentId) => {
-          dispatch({ REMOVE_LESSON_FROM_ASSIGNMENT, lessonId: lesson.id, assignmentId });
+          dispatch({ type: REMOVE_LESSON_FROM_ASSIGNMENT, lessonId: lesson.id, assignmentId });
         });
       }
 

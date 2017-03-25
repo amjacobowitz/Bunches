@@ -49,8 +49,10 @@ class AssignmentsController < ApplicationController
 
     assignment.teacher.assignments.delete(assignment)
 
-    if (assignment.lesson)
-      assignment.lesson.assignments.delete(assignment)
+    if assignment.lessons.any?
+      assignment.lessons.each do |lesson|
+        lesson.assignments.delete(assignment)
+      end
     end
 
     assignment.destroy
@@ -69,6 +71,6 @@ class AssignmentsController < ApplicationController
     end
 
     def assignment_params
-      params.require(:assignment).permit(:directions, :title, :completed, :submitted)
+      params.require(:assignment).permit(:directions, :title)
     end
 end

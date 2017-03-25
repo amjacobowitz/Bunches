@@ -7,27 +7,26 @@ import {
 const initialState = {
   id: '',
   firstName: '',
-  goals: [],
+  goal: {},
   group: {},
   klass: {},
   lastName: '',
 };
 
 const handlers = {
-  [FETCH_STUDENT]: (state, { student }) => ({
-    ...state,
-    id: student.id,
-    firstName: student.first_name,
-    lastName: student.last_name,
-    klass: {
-      name: student.klass.name,
-      id: student.klass.id
-    },
-    group: {
-      id: student.group.id
-    },
-    goals: student.goals,
-  }),
+  [FETCH_STUDENT]: (state, { student }) => {
+    return {
+      ...state,
+      id: student.id,
+      firstName: student.first_name,
+      lastName: student.last_name,
+      klass: {
+        name: student.klass.name,
+        id: student.klass.id
+      },
+      goal: student.goal,
+    }
+  },
   [FETCH_STUDENT_FAILURE]: (state, { error }) => ({
     ...state,
     error,

@@ -35,15 +35,17 @@ class Landing extends Component {
         <div style={ styles.title }>Teacher Portal</div>
         <TextInput
           name={'email'}
-          onChange={ this.onChange }
+          onChange={ (value) => this.onChange(value, 'email') }
           placeholder='email'
           style={ styles.input }
+          value={ this.state.email }
         />
         <TextInput
           name={'password'}
-          onChange={ this.onChange }
+          onChange={ (value) => this.onChange(value, 'password') }
           placeholder='password'
           style={ styles.input }
+          value={ this.state.password }
         />
         <Button
           text="login"

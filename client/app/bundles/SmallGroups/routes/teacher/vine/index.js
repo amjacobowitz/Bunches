@@ -22,9 +22,9 @@ import { selectAllGroupsInGrouping } from '../../../selectors/groups';
 
 import { PRIMARY, SECONDARY, GRAY } from '../../../palette';
 
-const plus = require('!!url!./plus.png');
+const plus = require('!!url!../vines/plus.png');
 
-class Grouper extends Component {
+class Vine extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +40,8 @@ class Grouper extends Component {
     const firstName = this.state.firstName;
     const lastName = this.state.lastName;
     const student = { firstName, lastName };
-    const teacherId = this.props.id;
+    const teacherId = this.props.params.id;
+
     this.toggleRodal();
     this.props.addStudent(student, teacherId);
     this.setState({ firstName: '', lastName: '' });
@@ -59,13 +60,8 @@ class Grouper extends Component {
   }
 
   addGroup = () => {
-    let { groupingId, groupings } = this.props;
-
-    if (!groupingId) {
-      groupingId = Object.keys(groupings)[0]
-    }
-    this.props.addGroup(groupingId);
-    this.props.setGroupingId(groupingId);
+    const { params } = this.props;
+    this.props.addGroup(params.vineId);
   }
 
   removeGroup = (group) => {
@@ -82,7 +78,7 @@ class Grouper extends Component {
   }
 
   render() {
-    const { students, groups, groupingId } = this.props;
+    const { students, groups, params } = this.props;
     const studentsExist = students.length > 0;
 
     return(
@@ -138,7 +134,7 @@ class Grouper extends Component {
                     showGoal={ this.state.showGoals }
                     removeGroup={ this.removeGroup }
                     addStudentToGroup={ this.addStudentToGroup }
-                    groupingId={ groupingId }
+                    groupingId={ params.vineId }
                   />
                 )
               })
@@ -288,13 +284,13 @@ const styles = {
   }),
 }
 
-const mapStateToProps = ({ groupings, students, groups }, ownProps) => {
-  const groupsInGrouping = selectAllGroupsInGrouping(groups, ownProps.groupingId);
+const mapStateToProps = ({ groupings, students, groups }, ownProps ) => {
+  const vineId = ownProps.params.vineId;
+  const groupsInGrouping = selectAllGroupsInGrouping(groups, vineId);
 
   return {
-    groupingId: ownProps.groupingId,
     groups: groupsInGrouping,
-    students: selectStudentsWithoutGroupsInGrouping(students, groups, ownProps.groupingId),
+    students: selectStudentsWithoutGroupsInGrouping(students, groups, vineId),
     groupings,
   }
 };
@@ -308,4 +304,4 @@ const mapActionsToProps = {
   removeStudentFromGroup,
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(Grouper);
+export default connect(mapStateToProps, mapActionsToProps)(Vine);
