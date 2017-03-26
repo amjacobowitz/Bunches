@@ -3,13 +3,12 @@ import {
   SUBMIT_SUBMISSION_FAILURE
 } from './index';
 
-import { putSubmission } from '../api';
+import { completeSubmission } from '../api';
 
 export default function submitSubmission() {
   return (dispatch, getState) => {
-    const { submission: { id } } = getState();
-
-    return putSubmission(id)
+    const { submission: { id, review, rating } } = getState();
+    return completeSubmission(id, review, rating)
     .then((submission) => {
       dispatch({ type: SUBMIT_SUBMISSION, submission });
     }).catch((err) => {

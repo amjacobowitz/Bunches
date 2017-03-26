@@ -33,6 +33,7 @@ const formatToObjs = (records) => {
          title: r.title,
          groups: r.groups.map((s) => s.id),
          days: r.days.map((d) => d.id),
+         submissions: r.submissions.map((s) => s.id)
        };
        return result;
     }, {});
@@ -52,6 +53,7 @@ const handlers = {
         title: assignment.title,
         groups: assignment.groups.map((s) => s.id),
         days: assignment.days.map((d) => d.id),
+        submissions: assignment.submissions.map((s) => s.id)
       }
     };
   },

@@ -86,12 +86,26 @@ export function createSubmission(studentId, assignmentId, raw) {
   return fetchRequest(url, options);
 }
 
-export function putSubmission(submissionId) {
+export function putSubmission(submissionId, raw, score) {
   const url = route(`/submissions/${submissionId}`);
   const options = genHTTPOptions('PUT', {
     submission: {
+      id: submissionId,
+      score: score,
+    },
+    answer: raw
+  })
 
-    }
+  return fetchRequest(url, options);
+}
+
+export function completeSubmission(submissionId, review, rating) {
+  const url = route(`/submissions/${submissionId}`);
+  const options = genHTTPOptions('PUT', {
+    submission: {
+      review: review,
+      rating: rating
+    },
   })
 
   return fetchRequest(url, options);

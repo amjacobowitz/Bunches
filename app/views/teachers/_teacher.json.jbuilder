@@ -14,6 +14,19 @@ json.assignments teacher.assignments do |assignment|
   json.title assignment.title
   json.groups assignment.groups
   json.days assignment.days
+
+  json.submissions assignment.submissions do |submission|
+    json.id submission.id
+    json.submitted submission.submitted
+    json.completed  submission.completed
+    json.score submission.score
+    json.rating submission.rating
+    json.answer submission.answer
+    json.review submission.review
+    json.assignment_id submission.assignment_id
+    json.student_id submission.student_id
+    json.day_id submission.day_id
+  end
 end
 
 json.lessons teacher.lessons do |lesson|
@@ -29,6 +42,7 @@ json.days teacher.days do |day|
   json.date day.date
   json.lessons day.lessons
   json.assignments day.assignments
+  json.submissions day.submissions
 end
 
 json.klasses teacher.klasses do |klass|

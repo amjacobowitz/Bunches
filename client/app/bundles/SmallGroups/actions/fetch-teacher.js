@@ -9,7 +9,8 @@ import {
   ADD_GROUPINGS,
   ADD_KLASSES,
   ADD_LESSONS,
-  ADD_STUDENTS
+  ADD_SUBMISSIONS,
+  ADD_STUDENTS,
 } from './index';
 
 import { getTeacher } from '../api';
@@ -31,6 +32,9 @@ export default function fetchTeacher(teacherId) {
       });
 
       dispatch({ type: ADD_ASSIGNMENTS, assignments: t.assignments });
+      t.assignments.forEach((a) => {
+        dispatch({ type: ADD_SUBMISSIONS, submissions: a.submissions });
+      });
       dispatch({ type: ADD_LESSONS, lessons: t.lessons });
       dispatch({ type: ADD_GOALS, goals: t.goals });
       dispatch({ type: ADD_DAYS, days: t.days });

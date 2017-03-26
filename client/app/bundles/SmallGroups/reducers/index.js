@@ -11,10 +11,10 @@ import groups from './groups';
 import groupings from './groupings';
 import klasses from './klasses';
 import lessons from './lessons';
-import review from './review';
 import student from './student';
 import students from './students';
 import submission from './submission';
+import submissions from './submissions';
 
 export default combineReducers({
   assignment,
@@ -27,9 +27,9 @@ export default combineReducers({
   groupings,
   klasses,
   lessons,
-  review,
   routing,
   student,
   students,
   submission,
+  submissions,
 })

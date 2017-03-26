@@ -1,1 +1,1 @@
-json.extract! submission, :id, :completed, :submitted, :rating, :review, :assignment, :student
+json.extract! submission, :id, :completed, :submitted, :review, :score, :answer, :assignment, :student, :day_id, :rating

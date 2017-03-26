@@ -1,7 +1,7 @@
 import { CHANGE_REVIEW } from './index';
 
-export default function changeReview(body) {
+export default function changeReview(review) {
   return (dispatch) => {
-    dispatch({type: CHANGE_REVIEW, body })
+    dispatch({type: CHANGE_REVIEW, review })
   }
 }

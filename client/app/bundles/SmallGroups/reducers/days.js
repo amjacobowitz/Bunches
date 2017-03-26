@@ -30,6 +30,7 @@ const formatToObjs = (records) => {
       },
       lessons: r.lessons.map((l) => l.id),
       assignments: r.assignments.map((a) => a.id),
+      submissions: r.submissions.map((s) => s.id),
     }
     return result;
   }, {});
@@ -50,7 +51,8 @@ const handlers = {
           day: date.day
         },
         lessons: [lessonId],
-        assignments: assignments
+        assignments: assignments,
+        submissions: []
       }
     }
   },

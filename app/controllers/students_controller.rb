@@ -65,6 +65,7 @@ class StudentsController < ApplicationController
     group = groups.find do |group|
       group.students.include?(student)
     end
+
     assignment = group.assignment
     respond_to do |format|
       if assignment

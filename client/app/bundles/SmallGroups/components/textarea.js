@@ -3,22 +3,22 @@ import { css } from 'glamor';
 
 import { LIGHT_GRAY, GRAY } from '../palette';
 
-export default function TextArea({ charCount, onChange, placeholder, value}) {
+export default function TextArea({ charCount, style, onChange, placeholder, value}) {
   const countStyle = value.length > 100 ? 'green' : 'red';
 
   const noSpaceValue = value.replace(/\s/g, '').length;
 
   return (
-    <div { ...styles.container }>
+    <div style={ styles.container }>
       <textarea
-        { ...styles.textarea }
+        style={ { ...styles.textarea, ...styles } }
         onChange={ (e) => onChange(e.target.value) }
         placeholder={ placeholder }
         value={ value }
       />
       {
         charCount && (
-          <div { ...styles.charCount }>
+          <div style={ styles.charCount }>
             <div style={ { color: countStyle } } >{ noSpaceValue }</div>
           </div>
         )
@@ -28,25 +28,26 @@ export default function TextArea({ charCount, onChange, placeholder, value}) {
 }
 
 const styles = {
-  container: css({
+  container: {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '2px',
     border: `1px solid ${LIGHT_GRAY}`,
     padding: '1em',
-    height: '300px',
-  }),
-  textarea: css({
+    height: '150px',
+  },
+  textarea: {
     color: GRAY,
     fontSize: '1.25em',
     fontWeight: 300,
     resize: 'none',
     border: 'none',
     outline: 'none',
-  }),
-  charCount: css({
+    height: '250px',
+  },
+  charCount: {
     alignSelf: 'flex-end',
     marginRight: '20px',
     marginBottom: '5px',
-  }),
+  },
 };
