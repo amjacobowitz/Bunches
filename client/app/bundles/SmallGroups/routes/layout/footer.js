@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <div { ...styles.container }>
       <div { ...styles.text }>
-        &copy; JacoboCorp
+        &copy; Jacobo
       </div>
     </div>
   );
