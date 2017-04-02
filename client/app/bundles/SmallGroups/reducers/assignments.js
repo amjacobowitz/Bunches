@@ -58,7 +58,7 @@ const handlers = {
     };
   },
   [ADD_ASSIGNMENTS]: (state, { assignments }) => {
-    return formatToObjs(assignments);
+    return { ...state, ...formatToObjs(assignments) };
   },
   [EDIT_ASSIGNMENT]: (state, { assignment }) => {
     delete state[assignment.id];
