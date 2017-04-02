@@ -33,7 +33,7 @@ const formatToObjs = (records) => {
 
 const handlers = {
   [ADD_SUBMISSIONS]: (state, { submissions }) => {
-    return formatToObjs(submissions);
+    return { ...state, ...formatToObjs(submissions) };
   },
 
   [ADD_SUBMISSION]: (state, { submission }) => {

@@ -35,6 +35,7 @@ const styles = {
     opacity: 0.5,
   }),
   goalBox: css({
+    fontFamily: 'BlinkMacSystemFont',
     display: 'flex',
     flexDirection: 'row',
     padding: '10px',

@@ -274,11 +274,10 @@ const mapStateToProps = ({
     return assignments[aId];
   });
 
-  const assignmentsForLessonOnDay = Object.values(dayAssignments).filter((a) => {
-    return a.lessons.includes(ownProps.lesson.id);
-  });
-
-  const submissionIds = Object.values(assignmentsForLessonOnDay).reduce((subIds, assignment) => {
+  //NOTE: Since there is only one lesson and klass available per day
+  //this works.  As I add the ability to have more than one lesson per day
+  //and more than one klass, this is likely to break.
+  const submissionIds = Object.values(dayAssignments).reduce((subIds, assignment) => {
     return subIds.concat(assignment.submissions);
   }, []);
 
@@ -288,7 +287,6 @@ const mapStateToProps = ({
     const submissionsForAssignments = submissionIds.map((submissionId) => {
       return submissions[submissionId];
     });
-
     studentSubmission = Object.values(submissionsForAssignments).filter((submission) =>  {
       return submission.studentId == ownProps.student.id && submission.dayId === ownProps.params.dayId;
     })[0];
