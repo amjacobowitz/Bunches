@@ -78,6 +78,9 @@ const styles = {
     marginBottom: '20px',
   },
   title: {
+    fontFamily: 'BlinkMacSystemFont',
+    fontWeight: 100,
+    fontSize: '14px',
     marginBottom: '90px',
   }
 }

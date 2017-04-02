@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 
 import Layout from './layout/index';
 
@@ -11,6 +11,7 @@ import Analysis from './teacher/analysis/index';
 import Assignments from './teacher/assignments/index';
 import Calendar from './teacher/calendar/index';
 import Dashboard from './teacher/dashboard/index';
+import Landing from './landing/index';
 import LessonEdit from './teacher/lessons/edit';
 import LessonsIndex from './teacher/lessons/index';
 import LessonNew from './teacher/lessons/new';
@@ -22,6 +23,7 @@ import Vine from './teacher/vine/index';
 
 export default (store) => (
   <Route component={ Layout }>
+    <Route path="/" component={ Landing } />
     <Route path="/student" component={ StudentLanding } />
     <Route path="/student/:id/assignment" component={ Assignment } />
     <Route path="/student/:id/review" component={ Review } />
