@@ -8,7 +8,9 @@
   "scripts": {
     "postinstall": "cd client && npm install",
     "rails-server": "echo 'visit http://localhost:3000/' && foreman start -f Procfile.dev",
-    "test": "rspec"
+    "test": "rspec",
+    "build:production": "yarn run build:production:client && yarn run build:production:server",
+
   },
   "cacheDirectories": [
     "node_modules",
