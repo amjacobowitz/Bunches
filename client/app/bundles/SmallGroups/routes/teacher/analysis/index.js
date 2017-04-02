@@ -13,6 +13,7 @@ class Analysis extends Component {
   render() {
     return(
       <div { ...styles.routeContainer }>
+        coming soon...
       </div>
     );
   }
