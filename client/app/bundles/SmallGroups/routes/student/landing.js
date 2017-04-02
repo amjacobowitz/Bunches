@@ -45,7 +45,7 @@ class Landing extends Component {
           style={ styles.input }
         />
         <Button
-          text="Get Started"
+          text="get started"
           disabled={ !this.state.name || !this.state.pin }
           onClick={ this.onClick }
         />
