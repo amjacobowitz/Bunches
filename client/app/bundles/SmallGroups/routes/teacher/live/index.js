@@ -47,20 +47,22 @@ class Live extends Component {
         <Heading
           heading="lesson live view"
         />
-        {
-          Object.values(students).map((s) => {
-            return (
-               <div { ...styles.submission } key={ s.id } onClick={ () => this.selectStudent(s) }>
-                <div { ...styles.name }>
-                  { s.name }
+        <div { ...styles.submissionsContainer }>
+          {
+            Object.values(students).map((s) => {
+              return (
+                 <div { ...styles.submission } key={ s.id } onClick={ () => this.selectStudent(s) }>
+                  <div { ...styles.name }>
+                    { s.name }
+                  </div>
+                  <div { ...styles.text }>
+                    { s.text }
+                  </div>
                 </div>
-                <div { ...styles.text }>
-                  { s.text }
-                </div>
-              </div>
-            );
-          })
-        }
+              );
+            })
+          }
+        </div>
         <Rodal
           visible={ this.state.visible }
           height={ 400 }
@@ -98,8 +100,13 @@ const styles = {
     flexWrap: 'wrap',
     justifyContent: 'center',
     textAlign: 'center',
+    flexDirection: 'column',
+  }),
+  submissionsContainer: css({
+    display: 'flex'
   }),
   submission: css({
+    cursor: 'pointer',
     display: 'flex',
     borderRadius: '4px',
     flexDirection: 'column',
