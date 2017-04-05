@@ -36,7 +36,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Use pry from debugging
 gem 'pry'
 gem 'puma'
-
+gem 'redis', '~> 3.0'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
