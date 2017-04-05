@@ -1,5 +1,14 @@
 import {  genHTTPOptions, route, fetchRequest } from './utils/api-config';
 
+export function updateLiveView(data) {
+  const url = route('/students/live')
+  const options = genHTTPOptions('POST',
+    { data }
+  );
+
+  return fetchRequest(url, options);
+};
+
 export function authorizeTeacher(teacher) {
   const url = route('/auth/teacher');
   const options = genHTTPOptions('POST',

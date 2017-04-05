@@ -76,6 +76,14 @@ class StudentsController < ApplicationController
     end
   end
 
+  def live
+    ActionCable.server.broadcast(
+      'live',
+      body: params[:data]
+    )
+    head :no_content
+  end
+
   private
 
   def student

@@ -168,6 +168,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actioncable
   bcrypt (~> 3.1.7)
   fabrication
   ffaker

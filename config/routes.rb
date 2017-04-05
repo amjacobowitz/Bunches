@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :assignments
   resources :students
   get 'students/:id/assignment' => 'students#assignment'
+  post 'students/live'
   resources :goals
   resources :groupings
   resources :lessons

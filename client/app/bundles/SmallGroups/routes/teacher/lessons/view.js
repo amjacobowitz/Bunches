@@ -49,6 +49,7 @@ const styles = {
     marginBottom: '10px',
   }),
   title: css({
+    fontFamily: 'BlinkMacSystemFont',
     fontSize: '18px',
   }),
   assignment: css({

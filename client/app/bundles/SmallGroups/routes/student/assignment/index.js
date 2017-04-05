@@ -6,6 +6,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { css } from 'glamor';
 import { connect } from 'react-redux';
 
+import { updateLiveView } from '../../../api';
+
 import Directions from './directions';
 import Goal from './goal';
 import DropArea from './drop-area';
@@ -35,6 +37,14 @@ class Assignment extends Component {
   }
 
   onEditorStateChange = (editorState) => {
+    const { student } = this.props;
+    updateLiveView(
+      {
+        id: student.id,
+        name: student.firstName,
+        text: editorState.getCurrentContent().getPlainText()
+      }
+    );
     this.setState({ editorState });
   }
 
@@ -66,7 +76,7 @@ class Assignment extends Component {
     const { student, assignment } = this.props;
     return(
       <div { ...styles.routeContainer }>
-        <Heading heading='My Itinerary - ' subheading={ student.name }>
+        <Heading heading='My Itinerary - ' subheading={ student.firstName }>
           <div { ...styles.date }> { moment().format('dddd, MMM Do') } </div>
         </Heading>
         <Goal goal={ student.goal || {} }/>
